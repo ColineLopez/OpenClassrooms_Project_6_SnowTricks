@@ -16,7 +16,7 @@ use App\Form\TrickType;
 
 class TrickController extends AbstractController
 {
-    #[Route('/tricks', name: 'app_tricks')]
+    #[Route('/home', name: 'app_tricks')]
     public function index(EntityManagerInterface $entityManager): Response
     {
          $tricks = $entityManager->getRepository(Trick::class)->findAll();
@@ -81,7 +81,10 @@ class TrickController extends AbstractController
             return $this->redirectToRoute('app_tricks');
         }
 
-        return $this->render('trick/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('trick/edit.html.twig', [
+            'form' => $form->createView(),
+            'trick' => $trick, 
+        ]);
 
     }
 
