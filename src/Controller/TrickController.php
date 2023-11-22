@@ -10,6 +10,10 @@ use App\Entity\Trick;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Comment;
 use App\Form\TrickType;
+use App\Entity\Movie;
+use App\Form\MovieType;
+use App\Entity\Picture;
+use App\Form\PictureType;
 // use Symfony\Component\Form\Extension\Core\Type\DateType;
 // use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 // use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -45,20 +49,40 @@ class TrickController extends AbstractController
     public function createTrick(EntityManagerInterface $entityManager, Request $request) : Response
     {
         $trick = new Trick();
-        $form = $this->createForm(TrickType::class, $trick);
+        $formTrick = $this->createForm(TrickType::class, $trick);
 
-        $form->handleRequest($request);
+        $formTrick->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formTrick->isSubmitted() && $formTrick->isValid()) {
             $entityManager->persist($trick);
             $entityManager->flush();
             // $trick = $form->getData();
 
             // return $this->redirectToRoute('task_success');
+
+            // $formMovie = $this->createForm(MovieType::class);
+            // $formMovie = $this->handleRequest($request);
+
+            // if ($formMovie->isSubmitted() && $formMovie->isValid()) {
+            //     // $movie = $formMovie->get('movies')->getData();
+
+            //     // foreach ($movies as $movieFile) {
+            //     //     $movie = new Movie();
+            //     //     $picture->setTrick($Trick);
+
+            //     //     $entityManager->persist($movie);
+            //     // }
+
+            //     // $entityManager->flush();
+
+            // }
             return $this->redirectToRoute('app_tricks');
         }
 
-        return $this->render('trick/create.html.twig', ['form' => $form->createView()]);
+        return $this->render('trick/create.html.twig', [
+            'formTrick' => $formTrick->createView(),
+            // 'formMovie' => $formMovie->createView(),
+        ]);
 
     }
 
@@ -67,23 +91,52 @@ class TrickController extends AbstractController
     {
         $trick = $entityManager->getRepository(Trick::class)->find($id);
 
-
         if(!$trick) {
             throw $this->createNotFoundException('Aucun trick trouvé pour l\'ID ' .$id);
         }
 
-        $form = $this->createForm(TrickType::class, $trick);
-        $form->handleRequest($request);
+        $formTrick = $this->createForm(TrickType::class, $trick);
+        $formTrick->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formTrick->isSubmitted() && $formTrick->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_tricks');
+        }
+
+        $movie = new Movie();
+        $formMovie = $this->createForm(MovieType::class, $movie);
+        $formMovie->handleRequest($request);
+
+        if ($formMovie->isSubmitted() && $formMovie->isValid()) {
+            $movie->setTrick($trick);
+            // $trick->addMovie($movie);
+            // $entityManager->persist($trick);
+            $entityManager->persist($movie);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_tricks');
+        }
+
+        $picture = new Picture();
+        $formPicture = $this->createForm(PictureType::class, $picture);
+        $formPicture->handleRequest($request);
+
+        if ($formPicture->isSubmitted() && $formPicture->isValid()) {
+            $picture->setTrick($trick);
+            $entityManager->persist($picture);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_tricks');
         }
 
         return $this->render('trick/edit.html.twig', [
-            'form' => $form->createView(),
-            'trick' => $trick, 
+            'formTrick' => $formTrick->createView(),
+            'formMovie' => $formMovie->createView(), 
+            'formPicture' => $formPicture->createView(),
+            'trick' => $trick,
+            'movie' => $movie,
+            'picture' => $picture,
         ]);
 
     }

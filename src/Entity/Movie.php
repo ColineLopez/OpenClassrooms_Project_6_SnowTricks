@@ -30,7 +30,7 @@ class Movie
         return $this->trick;
     }
 
-    public function setTrick(?Trick $trick): static
+    public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;
 

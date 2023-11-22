@@ -22,15 +22,39 @@
 <div class="example-wrapper">
     <h1>Modifier un trick</h1>
 
-    {{ form_start(form) }}
+    {{ form_start(formTrick) }}
 
-    {{ form_widget(form) }}
+    {{ form_widget(formTrick) }}
     
 
     <button type="submit" class="btn btn-primary">Modifier le trick</button>
 
-    {{ form_end(form) }}
+    {{ form_end(formTrick) }}
 
     <a href="{{ path('delete_trick', {'id': trick.id}) }}">Delete</a>
     
+    {{ form_start(formMovie) }}
+
+    {{ form_widget(formMovie) }}
+    
+
+    <button type="submit" class="btn btn-primary">Ajouter un lien vidéo</button>
+
+    {{ form_end(formMovie) }}
+
+    {{ form_start(formPicture) }}
+
+    {{ form_widget(formPicture) }}
+    
+
+    <button type="submit" class="btn btn-primary">Ajouter une photo</button>
+
+    {{ form_end(formPicture) }}
+
+
+
+
+</div>
+
+
 {% endblock %}

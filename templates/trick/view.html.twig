@@ -31,6 +31,16 @@
 
     <hr class="my-4">
 
+
+    {% for picture in trick.pictures %}
+        {{ picture.link }}
+    {% endfor %}
+
+    {% for movie in trick.movies %}
+        {{ movie.link }}
+    {% endfor %}
+
+
 </div>
     
     
