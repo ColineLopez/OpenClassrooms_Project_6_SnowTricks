@@ -14,6 +14,7 @@ use App\Entity\Movie;
 use App\Form\MovieType;
 use App\Entity\Picture;
 use App\Form\PictureType;
+use DateTime;
 // use Symfony\Component\Form\Extension\Core\Type\DateType;
 // use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 // use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -94,6 +95,9 @@ class TrickController extends AbstractController
         if(!$trick) {
             throw $this->createNotFoundException('Aucun trick trouvé pour l\'ID ' .$id);
         }
+
+        $trick->setEditDate();
+        // var_dump($trick);
 
         $formTrick = $this->createForm(TrickType::class, $trick);
         $formTrick->handleRequest($request);

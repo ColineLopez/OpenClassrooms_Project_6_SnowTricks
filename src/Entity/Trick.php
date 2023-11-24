@@ -36,8 +36,8 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $edit_date = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: false)]
+    private ?\DateTimeInterface $edit_date;
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Picture::class, orphanRemoval: true)]
     private Collection $pictures;
@@ -47,7 +47,7 @@ class Trick
         $this->creation_date = new DateTime();
         $this->movies = new ArrayCollection();
         $this->comments = new ArrayCollection();
-        // $this->edit_date = new DateTime();
+        $this->edit_date = new DateTime();
         $this->pictures = new ArrayCollection();
     }
 
@@ -169,8 +169,8 @@ class Trick
         return $this->edit_date;
     }
 
-    #[ORM\PrePersist]
-    public function setEditDate(?\DateTimeInterface $edit_date): static
+    //#[ORM\PrePersist]
+    public function setEditDate(): static
     {
         // $this->edit_date = $edit_date;
         $this->edit_date = new DateTime();

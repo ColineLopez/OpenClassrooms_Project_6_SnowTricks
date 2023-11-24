@@ -22,16 +22,6 @@
 
 <div class="example-wrapper">
 
-    <p>{{ trick.description }}</p>
-    
-    <div class="row">
-      <div class="col-md-auto">{{ trick.creationDate.format('Y-m-d H:i:s') }}</div>
-      <div class="col-md-auto">{{ trick.trickGroup }}</div>
-    </div>
-
-    <hr class="my-4">
-
-
     {% for picture in trick.pictures %}
         {{ picture.link }}
     {% endfor %}
@@ -39,6 +29,25 @@
     {% for movie in trick.movies %}
         {{ movie.link }}
     {% endfor %}
+
+
+    
+
+
+    <p>{{ trick.description }}</p>
+    
+    <div class="row">
+      <div class="col-md-auto">{{ trick.creationDate.format('Y-m-d H:i:s') }}</div>
+      <div class="col-md-auto">{{ trick.trickGroup }}</div>
+      {% if trick.creationDate.format('Y-m-d H:i:s') != trick.editDate.format('Y-m-d H:i:s') %}
+        <div class="col-md-auto">{{ trick.editDate.format('Y-m-d H:i:s') }}</div>
+        {% endif %}
+    </div>
+
+    <hr class="my-4">
+
+
+
 
 
 </div>
