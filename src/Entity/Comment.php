@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
@@ -16,7 +17,7 @@ class Comment
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Trick $Trick = null;
+    private ?Trick $trick = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -33,6 +34,13 @@ class Comment
     #[ORM\Column]
     private ?int $status = null;
 
+    public function __construct()
+    {
+        $this->creation_date = new DateTime();
+        $this->picture = 'default_picture';
+        $this->status = 2;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -40,12 +48,12 @@ class Comment
 
     public function getTrick(): ?Trick
     {
-        return $this->Trick;
+        return $this->trick;
     }
 
-    public function setTrick(?Trick $Trick): static
+    public function setTrick(?Trick $trick): static
     {
-        $this->Trick = $Trick;
+        $this->trick = $trick;
 
         return $this;
     }

@@ -1,37 +1,67 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Snowtricks - {{ trick.name }}{% endblock %}
+{% block title %}SnowTricks - {{ trick.name }}{% endblock %}
 
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    .banniere-trick { position:relative; height: 500px; display: flex; align-items: center; justify-content: center; text-align: center; }
-    .banniere-trick::before { content: ""; background-image: url("{{ asset('images/banniere-trick.jpg') }}"); background-size: cover;  position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; opacity: 0.75; background-position-y: center; }
-    .banniere-txt-trick { position: relative; color: #333333; font-size: 3rem; line-height: 0.9; text-align: center; }
 </style>
 
-<div class="container-xl banniere-trick">
-        <p class="banniere-txt-trick">
-            <a href="{{ path('edit_trick', {'id': trick.id}) }}"><i class="fa-solid fa-pencil"></i></i></a>
-            <a href="{{ path('delete_trick', {'id': trick.id}) }}"><i class="fa-solid fa-trash-can"></i></a>
-        </p>
-        <h1 class="banniere-txt-trick">{{ trick.name }}</h1>
+<div class="position-relative">
+    {% if trick.pictures is not empty %}
+        <img class='img-fluid' src="{{ asset(trick.pictures[0].link) }}">
+    {% else %}
+        <img  class='img-fluid' src="{{ asset('images/banniere-trick.jpg') }}">
+    {% endif %}
+
+    <div class="position-absolute top-50 start-50 translate-middle text-center">
+        <h1>{{ trick.name }}</h1>
+        <a href="{{ path('edit_trick', {'id': trick.id}) }}"><i class="fa-solid fa-pencil"></i></i></a>
+        <a href="{{ path('delete_trick', {'id': trick.id}) }}"><i class="fa-solid fa-trash-can"></i></a>
+    </div>
 </div>
 
 
 <div class="example-wrapper">
 
-    {% for picture in trick.pictures %}
-        {{ picture.link }}
-    {% endfor %}
+    {% if trick.pictures is not empty or trick.movies is not empty %}
+        <div class="d-sm-block d-md-none">
+            <button id="toggleButton" class="btn btn-primary">Afficher le contenu</button>
+        </div>
 
-    {% for movie in trick.movies %}
-        {{ movie.link }}
-    {% endfor %}
+        <div class="d-none d-sm-block container">
+            <div class="row justify-content-between">
+                {% for picture in trick.pictures %}
+                    <div class="col-lg-2 col-sm-6 embed-responsive embed-responsive-16by9">
+                        <img class='img-fluid' src="{{ asset(picture.link) }}">
+                    </div>
+                {% endfor %}
 
+                {% for movie in trick.movies %}
+                    <div class="col-lg-2 col-sm-6 embed-responsive embed-responsive-16by9">
+                     <iframe  src="{{ asset(movie.link) }}"> </iframe>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 
     
+<script>
+    // Récupérer l'élément à afficher
+    const contentToToggle = document.querySelector('.d-none');
+
+    // Récupérer le bouton
+    const toggleButton = document.getElementById('toggleButton');
+
+    // Ajouter un écouteur d'événement au bouton
+    toggleButton.addEventListener('click', function() {
+        // Inverser la visibilité du contenu
+        contentToToggle.classList.toggle('d-none');
+    });
+</script> 
+
 
 
     <p>{{ trick.description }}</p>
@@ -46,7 +76,21 @@
 
     <hr class="my-4">
 
+    {{ form_start(formComment) }}
 
+    {{ form_widget(formComment) }}
+    
+
+    <button type="submit" class="btn btn-primary">Ajouter un commentaire</button>
+
+    {{ form_end(formComment) }}
+
+    <hr class="my-4">
+    
+    {% for comment in trick.comments %}
+        {{ comment.name }}
+        {{ comment.content }}
+    {% endfor %}
 
 
 
