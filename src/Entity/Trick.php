@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Trick
 {
     #[ORM\Id]
@@ -32,18 +33,22 @@ class Trick
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Movie::class, orphanRemoval: true)]
     private Collection $movies;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Picture::class)]
-    private Collection $pictures;
-
-    #[ORM\OneToMany(mappedBy: 'Trick', targetEntity: Comment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: false)]
+    private ?\DateTimeInterface $edit_date;
+
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Picture::class, orphanRemoval: true)]
+    private Collection $pictures;
 
     public function __construct()
     {
         $this->creation_date = new DateTime();
         $this->movies = new ArrayCollection();
-        $this->pictures = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->edit_date = new DateTime();
+        $this->pictures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -107,7 +112,7 @@ class Trick
         return $this->movies;
     }
 
-    public function addMovie(Movie $movie): static
+    public function addMovie(Movie $movie): self
     {
         if (!$this->movies->contains($movie)) {
             $this->movies->add($movie);
@@ -117,42 +122,12 @@ class Trick
         return $this;
     }
 
-    public function removeMovie(Movie $movie): static
+    public function removeMovie(Movie $movie): self
     {
         if ($this->movies->removeElement($movie)) {
             // set the owning side to null (unless already changed)
             if ($movie->getTrick() === $this) {
                 $movie->setTrick(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Picture>
-     */
-    public function getPictures(): Collection
-    {
-        return $this->pictures;
-    }
-
-    public function addPicture(Picture $picture): static
-    {
-        if (!$this->pictures->contains($picture)) {
-            $this->pictures->add($picture);
-            $picture->setTrick($this);
-        }
-
-        return $this;
-    }
-
-    public function removePicture(Picture $picture): static
-    {
-        if ($this->pictures->removeElement($picture)) {
-            // set the owning side to null (unless already changed)
-            if ($picture->getTrick() === $this) {
-                $picture->setTrick(null);
             }
         }
 
@@ -183,6 +158,50 @@ class Trick
             // set the owning side to null (unless already changed)
             if ($comment->getTrick() === $this) {
                 $comment->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getEditDate(): ?\DateTimeInterface
+    {
+        return $this->edit_date;
+    }
+
+    //#[ORM\PrePersist]
+    public function setEditDate(): static
+    {
+        // $this->edit_date = $edit_date;
+        $this->edit_date = new DateTime();
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Picture>
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures->add($picture);
+            $picture->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getTrick() === $this) {
+                $picture->setTrick(null);
             }
         }
 

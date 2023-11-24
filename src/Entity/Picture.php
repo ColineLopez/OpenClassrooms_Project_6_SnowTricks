@@ -14,6 +14,7 @@ class Picture
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'pictures')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Trick $trick = null;
 
     #[ORM\Column(length: 255)]
@@ -29,7 +30,7 @@ class Picture
         return $this->trick;
     }
 
-    public function setTrick(?Trick $trick): static
+    public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;
 
