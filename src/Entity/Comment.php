@@ -19,11 +19,11 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?Trick $trick = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    // #[ORM\Column(length: 255)]
+    // private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $picture = null;
+    // #[ORM\Column(length: 255)]
+    // private ?string $picture = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
@@ -34,10 +34,14 @@ class Comment
     #[ORM\Column]
     private ?int $status = null;
 
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user; // = null;
+
     public function __construct()
     {
         $this->creation_date = new DateTime();
-        $this->picture = 'default_picture';
+        // $this->picture = 'default_picture';
         $this->status = 2;
     }
 
@@ -58,29 +62,29 @@ class Comment
         return $this;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+    // public function getName(): ?string
+    // {
+    //     return $this->name;
+    // }
 
-    public function setName(string $name): static
-    {
-        $this->name = $name;
+    // public function setName(string $name): static
+    // {
+    //     $this->name = $name;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
+    // public function getPicture(): ?string
+    // {
+    //     return $this->picture;
+    // }
 
-    public function setPicture(string $picture): static
-    {
-        $this->picture = $picture;
+    // public function setPicture(string $picture): static
+    // {
+    //     $this->picture = $picture;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getContent(): ?string
     {
@@ -114,6 +118,18 @@ class Comment
     public function setStatus(int $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
