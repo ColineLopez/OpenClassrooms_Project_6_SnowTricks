@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Trick;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\User;
 use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Form\TrickType;
@@ -16,9 +17,6 @@ use App\Form\MovieType;
 use App\Entity\Picture;
 use App\Form\PictureType;
 use DateTime;
-// use Symfony\Component\Form\Extension\Core\Type\DateType;
-// use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-// use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TrickController extends AbstractController
 {
@@ -42,6 +40,7 @@ class TrickController extends AbstractController
             throw $this->createNotFoundException('Aucun trick trouvé pour l\'ID ' .$id);
         }
 
+        $user = $this->getUser();
 
         $comment = new Comment();
         $formComment = $this->createForm(CommentType::class, $comment);
@@ -49,6 +48,7 @@ class TrickController extends AbstractController
 
         
         if ($formComment->isSubmitted() && $formComment->isValid()) {
+            $comment->setUser($user);
             $comment->setTrick($trick);
             $entityManager->persist($comment);
             $entityManager->flush();
@@ -59,6 +59,7 @@ class TrickController extends AbstractController
         return $this->render('trick/view.html.twig', [
             'formComment' => $formComment->createView(), 
             'trick' => $trick,
+            'user' => $user,
             'comment' => $comment,
         ]);
     }
@@ -119,11 +120,37 @@ class TrickController extends AbstractController
         $formTrick = $this->createForm(TrickType::class, $trick);
         $formTrick->handleRequest($request);
 
-        if ($formTrick->isSubmitted() && $formTrick->isValid()) {
+
+        if ($formTrick->getClickedButton() === $formTrick->get('save')) {
+            // ...
+            $entityManager->flush();
+            return $this->redirectToRoute('view_trick', ['id' => $id]);
+        }
+
+        // when using nested forms, two or more buttons can have the same name;
+        // in those cases, compare the button objects instead of the button names
+        if ($formTrick->getClickedButton() === $formTrick->get('delete')){
+            // ...
+            $entityManager->remove($trick);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_tricks');
         }
+
+
+
+
+        // if ($formTrick->isSubmitted() && $formTrick->isValid()) {
+        //     $entityManager->flush();
+
+        //     return $this->redirectToRoute('view_trick', ['id' => $id]);
+        // }
+        // if ($request->request->get('delete')) {
+        //     $entityManager->remove($trick);
+        //     $entityManager->flush();
+
+        //     return $this->redirectToRoute('app_tricks');
+        // }
 
         $movie = new Movie();
         $formMovie = $this->createForm(MovieType::class, $movie);

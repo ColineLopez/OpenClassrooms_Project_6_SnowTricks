@@ -29,15 +29,22 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/home">Home</a>
             </li>
+            {% if app.user %}
+            <p> Bienvenue, {{ app.user.name }} ! </p>
             <li class="nav-item">
-              <a class="nav-link" href="/create-tricks">Créer un trick</a>
+              <a class="nav-link" href="/create-trick">Créer un trick</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/sign-in">Sign in</a>
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Sign in</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled" href="/sign-up" aria-disabled="true">Sign up</a>
+              <a class="nav-link" href="/register" aria-disabled="true">Sign up</a>
             </li>
+            {% endif %}
           </ul>
         </div>
       </div>
