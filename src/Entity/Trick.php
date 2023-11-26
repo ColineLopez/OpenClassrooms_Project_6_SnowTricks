@@ -142,7 +142,7 @@ class Trick
         return $this->comments;
     }
 
-    public function addComment(Comment $comment): static
+    public function addComment(Comment $comment): self
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
@@ -152,7 +152,7 @@ class Trick
         return $this;
     }
 
-    public function removeComment(Comment $comment): static
+    public function removeComment(Comment $comment): self
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)

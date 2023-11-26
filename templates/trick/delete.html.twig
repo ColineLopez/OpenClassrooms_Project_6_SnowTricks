@@ -13,10 +13,17 @@
 
     <p>Êtes-vous sûr de vouloir supprimer ce trick "{{ trick.name }}" ?</p>
 
-    
 
+    {{ form_start(form) }}
+
+    {{ form_widget(form) }}
+    
     <a href="{{ path('app_tricks') }}" class="btn btn-secondary">Annuler</a>
 
-    <button type="submit" class="btn btn-primary">Supprimer le trick</button>
-    
+    <button type="submit" class="btn btn-primary"  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">Supprimer le trick</button>
+
+    {{ form_end(form) }}
+
+
+
 {% endblock %}

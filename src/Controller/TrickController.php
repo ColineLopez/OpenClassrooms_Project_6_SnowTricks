@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Trick;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Comment;
+use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Entity\Movie;
 use App\Form\MovieType;
@@ -32,17 +33,33 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick/{id}', name: 'view_trick')]
-    public function viewTrick(EntityManagerInterface $entityManager, int $id): Response
+    public function viewTrick(EntityManagerInterface $entityManager, Request $request, int $id): Response
     {
         $trick = $entityManager->getRepository(Trick::class)->find($id);
-        
+
 
         if(!$trick) {
             throw $this->createNotFoundException('Aucun trick trouvé pour l\'ID ' .$id);
         }
+
+
+        $comment = new Comment();
+        $formComment = $this->createForm(CommentType::class, $comment);
+        $formComment->handleRequest($request);
+
         
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
+            $comment->setTrick($trick);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_tricks');
+        }
+
         return $this->render('trick/view.html.twig', [
+            'formComment' => $formComment->createView(), 
             'trick' => $trick,
+            'comment' => $comment,
         ]);
     }
 
