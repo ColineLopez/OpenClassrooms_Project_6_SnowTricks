@@ -24,9 +24,6 @@ class Trick
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $trick_group = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creation_date = null;
 
@@ -41,6 +38,10 @@ class Trick
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Picture::class, orphanRemoval: true)]
     private Collection $pictures;
+
+    #[ORM\ManyToOne(inversedBy: 'trick')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Group $group_id = null;
 
     public function __construct()
     {
@@ -76,18 +77,6 @@ class Trick
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getTrickGroup(): ?string
-    {
-        return $this->trick_group;
-    }
-
-    public function setTrickGroup(string $trick_group): static
-    {
-        $this->trick_group = $trick_group;
 
         return $this;
     }
@@ -204,6 +193,18 @@ class Trick
                 $picture->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGroupId(): ?Group
+    {
+        return $this->group_id;
+    }
+
+    public function setGroupId(?Group $group_id): static
+    {
+        $this->group_id = $group_id;
 
         return $this;
     }

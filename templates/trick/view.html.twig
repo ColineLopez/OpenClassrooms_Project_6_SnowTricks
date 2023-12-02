@@ -68,7 +68,7 @@
     
     <div class="row">
       <div class="col-md-auto">{{ trick.creationDate.format('Y-m-d H:i:s') }}</div>
-      <div class="col-md-auto">{{ trick.trickGroup }}</div>
+      <div class="col-md-auto">{{ trick.groupId.name }}</div>
       {% if trick.creationDate.format('Y-m-d H:i:s') != trick.editDate.format('Y-m-d H:i:s') %}
         <div class="col-md-auto">{{ trick.editDate.format('Y-m-d H:i:s') }}</div>
         {% endif %}
@@ -87,20 +87,26 @@
 
     <hr class="my-4">
     
-    {% for comment in trick.comments %}
+    {% if trick.comments is not empty %}
+        {% for comment in trick.comments %}
+            <div class="container text-center">
+              <div class="row">
+                <div class="col">
+                  <img class='img-fluid' src="{{ asset(comment.user.picture) }}">
+                </div>
+                <div class="col">
+                  {{ comment.user.name }}
+                  <br>
+                  {{ comment.content }}
+                </div>
+              </div>
+            </div>
+        {% endfor %}
+    {% else %}
         <div class="container text-center">
-          <div class="row">
-            <div class="col">
-              <img class='img-fluid' src="{{ asset(user.picture) }}">
-            </div>
-            <div class="col">
-              {{ user.name }}
-              {{ comment.content }}
-            </div>
-          </div>
+          Aucun commentaire n'a encore été publié.
         </div>
-    {% endfor %}
-
+    {% endif %}
 
 
 </div>

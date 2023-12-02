@@ -121,30 +121,30 @@ class TrickController extends AbstractController
         $formTrick->handleRequest($request);
 
 
-        if ($formTrick->getClickedButton() === $formTrick->get('save')) {
-            // ...
-            $entityManager->flush();
-            return $this->redirectToRoute('view_trick', ['id' => $id]);
-        }
-
-        // when using nested forms, two or more buttons can have the same name;
-        // in those cases, compare the button objects instead of the button names
-        if ($formTrick->getClickedButton() === $formTrick->get('delete')){
-            // ...
-            $entityManager->remove($trick);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_tricks');
-        }
-
-
-
-
-        // if ($formTrick->isSubmitted() && $formTrick->isValid()) {
+        // if ($formTrick->getClickedButton() === $formTrick->get('save')) {
+        //     // ...
         //     $entityManager->flush();
-
         //     return $this->redirectToRoute('view_trick', ['id' => $id]);
         // }
+
+        // // when using nested forms, two or more buttons can have the same name;
+        // // in those cases, compare the button objects instead of the button names
+        // if ($formTrick->getClickedButton() === $formTrick->get('delete')){
+        //     // ...
+        //     $entityManager->remove($trick);
+        //     $entityManager->flush();
+
+        //     return $this->redirectToRoute('app_tricks');
+        // }
+
+
+
+
+        if ($formTrick->isSubmitted() && $formTrick->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('view_trick', ['id' => $id]);
+        }
         // if ($request->request->get('delete')) {
         //     $entityManager->remove($trick);
         //     $entityManager->flush();

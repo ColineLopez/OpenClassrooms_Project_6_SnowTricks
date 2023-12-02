@@ -12,11 +12,11 @@
     <h1>Créer un Trick</h1>
 
     {{ form_start(formTrick) }}
+        {{ form_row(formTrick.name) }}
+        {{ form_row(formTrick.description) }}
+        {{ form_row(formTrick.group_id) }}
 
-    {{ form_widget(formTrick)}}
-    
-
-    <button type="submit" class="btn btn-primary">Créer le trick</button>
+        <button type="submit" class="btn btn-primary">Créer le trick</button>
 
     {{ form_end(formTrick) }}
     

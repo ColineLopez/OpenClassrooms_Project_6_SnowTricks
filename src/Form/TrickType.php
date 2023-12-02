@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Trick;
+use App\Entity\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -10,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+// use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class TrickType extends AbstractType
 {
@@ -18,9 +21,14 @@ class TrickType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => false])
             ->add('description', TextareaType::class, ['label' => false])
-            ->add('trick_group', TextType::class, ['label' => false])
-            ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
-            ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
+            ->add('group_id', EntityType::class, [
+                'class' => Group::class,
+                'choice_label' => 'name',
+                'label' => 'Choisir une option',
+                // D'autres options de EntityType si nécessaire
+            ])
+            // ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
+            // ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
             // ->add('creation_date')
         ;
     }
