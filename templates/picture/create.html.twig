@@ -11,9 +11,9 @@
 <div class="example-wrapper">
     <h1>{{trick.name}} - Ajouter une image</h1>
 
-    {{ form_start(formPicture) }}
-        {{ form_row(formPicture.link) }}
+    {{ form_start(form) }}
+        {{ form_row(form.link) }}
         <button type="submit" class="btn btn-primary">Ajouter</button>
-    {{ form_end(formPicture) }}
+    {{ form_end(form) }}
     
 {% endblock %}

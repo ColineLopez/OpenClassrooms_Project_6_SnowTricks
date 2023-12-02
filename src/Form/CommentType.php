@@ -6,18 +6,14 @@ use App\Entity\Comment;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CommentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // ->add('name')
-            // ->add('picture')
-            ->add('content')
-            // ->add('creation_date')
-            // ->add('status')
-            // ->add('Trick')
+            ->add('content', TextType::class, ['label' => false])
         ;
     }
 

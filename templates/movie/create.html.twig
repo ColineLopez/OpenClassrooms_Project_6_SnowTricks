@@ -11,9 +11,9 @@
 <div class="example-wrapper">
     <h1>{{trick.name}} - Ajouter une vidéo</h1>
 
-    {{ form_start(formMovie) }}
-        {{ form_row(formMovie.link) }}
+    {{ form_start(form) }}
+        {{ form_row(form.link) }}
         <button type="submit" class="btn btn-primary">Ajouter</button>
-    {{ form_end(formMovie) }}
+    {{ form_end(form) }}
     
 {% endblock %}

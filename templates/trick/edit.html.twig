@@ -43,7 +43,7 @@
                 <div class="col-sm-4 embed-responsive embed-responsive-16by9">
                     <img class='img-fluid' src="{{ asset(picture.link) }}">
                     <a href="{{trick.name}}/edit-picture/{{picture.id}}"><i class="fa-solid fa-pencil"></i></i></a>
-                    <a href="{{ path('delete_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-trash-can"></i></a>
+                    <a href="{{trick.name}}/delete-picture/{{picture.id}}"><i class="fa-solid fa-trash-can"></i></a>
                 </div>
             {% endfor %}
         
@@ -51,7 +51,7 @@
                 <div class="col-sm-4 embed-responsive embed-responsive-16by9">
                     <iframe  src="{{ asset(movie.link) }}"> </iframe>
                     <a href="{{trick.name}}/edit-picture/{{movie.id}}"><i class="fa-solid fa-pencil"></i></i></a>
-                    <a href="{{ path('delete_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-trash-can"></i></a>
+                    <a href="{{trick.name}}/delete-movie/{{movie.id}}"><i class="fa-solid fa-trash-can"></i></a>
                 </div>
             {% endfor %}
 
@@ -83,24 +83,24 @@
 
 <div class="example-wrapper text-center">
 
-    {{ form_start(formTrick) }}
-        <h1>{{ form_row(formTrick.name) }}</h1>
-        <p>{{ form_row(formTrick.description) }}</p>
-        {{ form_row(formTrick.group_id) }}
+    {{ form_start(form) }}
+        <h1>{{ form_row(form.name) }}</h1>
+        <p>{{ form_row(form.description) }}</p>
+        {{ form_row(form.group_id) }}
     
         <div class="container text-center">
           <div class="row">
             <div class="col">
               <a href="/delete-trick/{{ trick.name }}" class="btn btn-primary">Supprimer</a>  
-              {# form_row(formTrick.delete) #}
+              {# form_row(form.delete) #}
             </div>
             <div class="col">
               <button type="submit" class="btn btn-primary">Sauvegarder</button> 
-              {# form_row(formTrick.save) #}
+              {# form_row(form.save) #}
             </div>
           </div>
         </div>
-    {{ form_end(formTrick) }}    
+    {{ form_end(form) }}    
 
 </div>
 

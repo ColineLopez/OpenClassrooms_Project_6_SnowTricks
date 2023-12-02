@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier une vidéo - {{trick.name}}{% endblock %}
+{% block title %}Supprimer une vidéo - {{trick.name}}{% endblock %}
 
 {% block body %}
 <style>
@@ -9,11 +9,13 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>{{trick.name}} - Modifier une vidéo</h1>
+    <h1>{{trick.name}} - Supprimer une vidéo</h1>
 
     {{ form_start(form) }}
         {{ form_row(form.link) }}
-        <button type="submit" class="btn btn-primary">Modifier</button>
+        <a href="{{ path('app_tricks') }}" class="btn btn-secondary">Annuler</a>
+
+        <button type="submit" class="btn btn-primary"  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette vidéo ?')">Supprimer</button>
     {{ form_end(form) }}
     
 {% endblock %}

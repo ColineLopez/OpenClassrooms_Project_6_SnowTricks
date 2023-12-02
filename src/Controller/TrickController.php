@@ -116,10 +116,10 @@ class TrickController extends AbstractController
         }
 
         $trick->setEditDate();
-        $formTrick = $this->createForm(TrickType::class, $trick);
-        $formTrick->handleRequest($request);
+        $form = $this->createForm(TrickType::class, $trick);
+        $form->handleRequest($request);
 
-        if ($formTrick->isSubmitted() && $formTrick->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
             return $this->redirectToRoute('view_trick', ['slug' => $slug]);
@@ -129,7 +129,7 @@ class TrickController extends AbstractController
         $picture = new Picture();
 
         return $this->render('trick/edit.html.twig', [
-            'formTrick' => $formTrick->createView(),
+            'form' => $form->createView(),
             'trick' => $trick,
             'movie' => $movie,
             'picture' => $picture,

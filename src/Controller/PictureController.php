@@ -13,13 +13,6 @@ use App\Form\PictureType;
 
 class PictureController extends AbstractController
 {
-    // #[Route('/picture', name: 'app_picture')]
-    // public function index(): Response
-    // {
-    //     return $this->render('picture/index.html.twig', [
-    //         'controller_name' => 'PictureController',
-    //     ]);
-    // }
     
     #[Route('/edit-trick/{slug}/add-picture', name:'add_picture')]
     public function addPicture(EntityManagerInterface $entityManager, Request $request, string $slug) : Response
@@ -33,10 +26,10 @@ class PictureController extends AbstractController
         $trick->setEditDate();
 
         $picture = new Picture();
-        $formPicture = $this->createForm(PictureType::class, $picture);
-        $formPicture->handleRequest($request);
+        $form = $this->createForm(PictureType::class, $picture);
+        $form->handleRequest($request);
 
-        if ($formPicture->isSubmitted() && $formPicture->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $picture->setTrick($trick);
             $entityManager->persist($picture);
             $entityManager->flush();
@@ -45,7 +38,7 @@ class PictureController extends AbstractController
         }
 
         return $this->render('picture/create.html.twig', [
-            'formPicture' => $formPicture->createView(),
+            'form' => $form->createView(),
             'trick' => $trick,
             'picture' => $picture,
         ]);
@@ -65,34 +58,48 @@ class PictureController extends AbstractController
         $trick->setEditDate();
 
         $picture = $entityManager->getRepository(Picture::class)->find($id);
-        $formPicture = $this->createForm(PictureType::class, $picture);
-        $formPicture->handleRequest($request);
+        $form = $this->createForm(PictureType::class, $picture);
+        $form->handleRequest($request);
 
-        if ($formPicture->isSubmitted() && $formPicture->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
             return $this->redirectToRoute('view_trick', ['slug' => $slug]);
         }
-        
-
-        // if ($formPicture->isSubmitted() && $formPicture->isValid()) {
-        //     $picture->setTrick($trick);
-        //     $entityManager->persist($picture);
-        //     $entityManager->flush();
-
-        //     return $this->redirectToRoute('view_trick', ['name' => $slug]);
-        // }
 
         return $this->render('picture/edit.html.twig', [
-            // 'formTrick' => $formTrick->createView(),
-            // 'formMovie' => $formMovie->createView(), 
-            'formPicture' => $formPicture->createView(),
+            'form' => $form->createView(),
             'trick' => $trick,
-            // 'movie' => $movie,
             'picture' => $picture,
         ]);
 
     }
 
+    #[Route('/edit-trick/{slug}/delete-picture/{id}', name:'delete_picture')]
+    public function deleteTrick(EntityManagerInterface $entityManager, Request $request, string $slug, int $id) : Response
+    {
+        $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
 
+
+        if(!$trick) {
+            throw $this->createNotFoundException('Aucun trick trouvé pour le slug ' .$slug);
+        }
+        $picture = $entityManager->getRepository(Picture::class)->find($id);
+        $form = $this->createForm(PictureType::class, $picture);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->remove($picture);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_tricks');
+        }
+
+        return $this->render('picture/delete.html.twig', [
+            'trick' => $trick,
+            'form' => $form->createView(),
+            'picture' => $picture,
+        ]);
+
+    }
 }
