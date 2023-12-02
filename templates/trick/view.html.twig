@@ -10,15 +10,19 @@
 
 <div class="position-relative">
     {% if trick.pictures is not empty %}
-        <img class='img-fluid' src="{{ asset(trick.pictures[0].link) }}">
+        {% for picture in trick.pictures %}
+            {% if picture.banner %}
+                <img class='img-fluid' src="{{ asset(picture.link) }}">
+            {% endif %}
+        {% endfor %}
     {% else %}
         <img  class='img-fluid' src="{{ asset('images/banniere-trick.jpg') }}">
     {% endif %}
 
     <div class="position-absolute top-50 start-50 translate-middle text-center">
         <h1>{{ trick.name }}</h1>
-        <a href="{{ path('edit_trick', {'id': trick.id}) }}"><i class="fa-solid fa-pencil"></i></i></a>
-        <a href="{{ path('delete_trick', {'id': trick.id}) }}"><i class="fa-solid fa-trash-can"></i></a>
+        <a href="{{ path('edit_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-pencil"></i></i></a>
+        <a href="{{ path('delete_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-trash-can"></i></a>
     </div>
 </div>
 

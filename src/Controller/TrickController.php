@@ -17,6 +17,7 @@ use App\Form\MovieType;
 use App\Entity\Picture;
 use App\Form\PictureType;
 use DateTime;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class TrickController extends AbstractController
 {
@@ -30,14 +31,14 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/trick/{id}', name: 'view_trick')]
-    public function viewTrick(EntityManagerInterface $entityManager, Request $request, int $id): Response
+    #[Route('/trick/{slug}', name: 'view_trick')]
+    public function viewTrick(EntityManagerInterface $entityManager, Request $request, string $slug): Response
     {
-        $trick = $entityManager->getRepository(Trick::class)->find($id);
+        $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
 
 
         if(!$trick) {
-            throw $this->createNotFoundException('Aucun trick trouvé pour l\'ID ' .$id);
+            throw $this->createNotFoundException('Aucun trick trouvé pour le slug ' .$slug);
         }
 
         $user = $this->getUser();
@@ -105,83 +106,30 @@ class TrickController extends AbstractController
 
     }
 
-    #[Route('/edit-trick/{id}', name:'edit_trick')]
-    public function editTrick(EntityManagerInterface $entityManager, Request $request, int $id) : Response
+    #[Route('/edit-trick/{slug}', name:'edit_trick')]
+    public function editTrick(EntityManagerInterface $entityManager, Request $request, string $slug) : Response
     {
-        $trick = $entityManager->getRepository(Trick::class)->find($id);
+        $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
 
         if(!$trick) {
-            throw $this->createNotFoundException('Aucun trick trouvé pour l\'ID ' .$id);
+            throw $this->createNotFoundException('Aucun trick trouvé pour le slug ' .$slug);
         }
 
         $trick->setEditDate();
-        // var_dump($trick);
-
         $formTrick = $this->createForm(TrickType::class, $trick);
         $formTrick->handleRequest($request);
-
-
-        // if ($formTrick->getClickedButton() === $formTrick->get('save')) {
-        //     // ...
-        //     $entityManager->flush();
-        //     return $this->redirectToRoute('view_trick', ['id' => $id]);
-        // }
-
-        // // when using nested forms, two or more buttons can have the same name;
-        // // in those cases, compare the button objects instead of the button names
-        // if ($formTrick->getClickedButton() === $formTrick->get('delete')){
-        //     // ...
-        //     $entityManager->remove($trick);
-        //     $entityManager->flush();
-
-        //     return $this->redirectToRoute('app_tricks');
-        // }
-
-
-
 
         if ($formTrick->isSubmitted() && $formTrick->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('view_trick', ['id' => $id]);
+            return $this->redirectToRoute('view_trick', ['slug' => $slug]);
         }
-        // if ($request->request->get('delete')) {
-        //     $entityManager->remove($trick);
-        //     $entityManager->flush();
-
-        //     return $this->redirectToRoute('app_tricks');
-        // }
 
         $movie = new Movie();
-        $formMovie = $this->createForm(MovieType::class, $movie);
-        $formMovie->handleRequest($request);
-
-        if ($formMovie->isSubmitted() && $formMovie->isValid()) {
-            $movie->setTrick($trick);
-            // $trick->addMovie($movie);
-            // $entityManager->persist($trick);
-            $entityManager->persist($movie);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_tricks');
-        }
-
         $picture = new Picture();
-        $formPicture = $this->createForm(PictureType::class, $picture);
-        $formPicture->handleRequest($request);
-
-        if ($formPicture->isSubmitted() && $formPicture->isValid()) {
-            $picture->setTrick($trick);
-            $entityManager->persist($picture);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_tricks');
-        }
 
         return $this->render('trick/edit.html.twig', [
             'formTrick' => $formTrick->createView(),
-            'formMovie' => $formMovie->createView(), 
-            'formPicture' => $formPicture->createView(),
             'trick' => $trick,
             'movie' => $movie,
             'picture' => $picture,
@@ -189,14 +137,14 @@ class TrickController extends AbstractController
 
     }
 
-    #[Route('/delete-trick/{id}', name:'delete_trick')]
-    public function deleteTrick(EntityManagerInterface $entityManager, Request $request, int $id) : Response
+    #[Route('/delete-trick/{slug}', name:'delete_trick')]
+    public function deleteTrick(EntityManagerInterface $entityManager, Request $request, string $slug) : Response
     {
-        $trick = $entityManager->getRepository(Trick::class)->find($id);
+        $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
 
 
         if(!$trick) {
-            throw $this->createNotFoundException('Aucun trick trouvé pour l\'ID ' .$id);
+            throw $this->createNotFoundException('Aucun trick trouvé pour le slug ' .$slug);
         }
 
         $form = $this->createForm(TrickType::class, $trick);
