@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SnowTricks - Admin{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Figure</th>
+      <th scope="col">Auteur</th>
+      <th scope="col">Commentaire</th>
+      <th scope="col">Validation</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for trick in tricks %}
+    {% for comment in trick.comments|filter(comment => comment.status ==3) %}
+    <tr>
+      <td><a href='/trick/{{trick.name}}'>{{trick.name}}</a></td>
+      <td>{{comment.user.name}}</td>
+      <td>{{comment.content}}</td>
+      <td>
+        <a href="{{ path('admin_approve', { 'id': comment.id }) }}"><i class="fa-solid fa-check"></i></a>
+        <a href="{{ path('admin_reject', { 'id': comment.id }) }}"><i class="fa-solid fa-xmark"></i></a>
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

@@ -81,18 +81,14 @@
     <hr class="my-4">
 
     {{ form_start(formComment) }}
-
-    {{ form_widget(formComment) }}
-    
-
-    <button type="submit" class="btn btn-primary">Ajouter un commentaire</button>
-
+        {{ form_widget(formComment) }}
+        <button type="submit" class="btn btn-primary">Ajouter un commentaire</button>
     {{ form_end(formComment) }}
 
     <hr class="my-4">
     
-    {% if trick.comments is not empty %}
-        {% for comment in trick.comments %}
+    {% if trick.comments|filter(comment => comment.status ==2) is not empty %}
+        {% for comment in trick.comments|filter(comment => comment.status ==2) %}
             <div class="container text-center">
               <div class="row">
                 <div class="col">

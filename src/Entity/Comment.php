@@ -38,11 +38,15 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user; // = null;
 
+    protected const ACCEPTED = 1;
+    protected const REJECTED = 2;
+    protected const WAITING = 3;
+
     public function __construct()
     {
         $this->creation_date = new DateTime();
         // $this->picture = 'default_picture';
-        $this->status = 2;
+        // $this->status = self::WAITING;
     }
 
     public function getId(): ?int

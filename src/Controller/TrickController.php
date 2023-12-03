@@ -21,10 +21,14 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class TrickController extends AbstractController
 {
+    protected const ACCEPTED = 1;
+    protected const REJECTED = 2;
+    protected const WAITING = 3;
+
     #[Route('/home', name: 'app_tricks')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-         $tricks = $entityManager->getRepository(Trick::class)->findAll();
+        $tricks = $entityManager->getRepository(Trick::class)->findAll();
 
         return $this->render('trick/index.html.twig', [
             'tricks' => $tricks,
@@ -51,10 +55,11 @@ class TrickController extends AbstractController
         if ($formComment->isSubmitted() && $formComment->isValid()) {
             $comment->setUser($user);
             $comment->setTrick($trick);
+            $comment->setStatus(self::WAITING);
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_tricks');
+            return $this->redirectToRoute('view_trick', ['slug' => $slug]);
         }
 
         return $this->render('trick/view.html.twig', [
