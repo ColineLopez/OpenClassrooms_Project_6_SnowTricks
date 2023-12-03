@@ -30,7 +30,6 @@
               <a class="nav-link active" aria-current="page" href="/home">Home</a>
             </li>
             {% if app.user %}
-            <p> Bienvenue, {{ app.user.name }} ! </p>
             <li class="nav-item">
               <a class="nav-link" href="/create-trick">Créer un trick</a>
             </li>
@@ -39,6 +38,9 @@
                 <a class="nav-link" href="/admin">Modération</a>
               </li>
               {% endif %}
+            <li class="nav-item">
+              <a class="nav-link disabled"> Bienvenue, {{ app.user.name }} ! </a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" href="/logout">Logout</a>
             </li>
