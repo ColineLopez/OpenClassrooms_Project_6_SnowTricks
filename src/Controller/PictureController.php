@@ -34,6 +34,7 @@ class PictureController extends AbstractController
             $entityManager->persist($picture);
             $entityManager->flush();
 
+            $this->addFlash('success', 'L\'image a bien été ajoutée !');
             return $this->redirectToRoute('app_tricks');
         }
 
@@ -64,6 +65,7 @@ class PictureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'L\'image a bien été modifiée !');
             return $this->redirectToRoute('view_trick', ['slug' => $slug]);
         }
 
@@ -92,6 +94,7 @@ class PictureController extends AbstractController
             $entityManager->remove($picture);
             $entityManager->flush();
 
+            $this->addFlash('success', 'L\'image a bien été supprimée !');
             return $this->redirectToRoute('app_tricks');
         }
 

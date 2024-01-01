@@ -59,6 +59,7 @@ class TrickController extends AbstractController
             $entityManager->persist($comment);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Votre commentaire a bien été envoyé !');
             return $this->redirectToRoute('view_trick', ['slug' => $slug]);
         }
 
@@ -81,32 +82,13 @@ class TrickController extends AbstractController
         if ($formTrick->isSubmitted() && $formTrick->isValid()) {
             $entityManager->persist($trick);
             $entityManager->flush();
-            // $trick = $form->getData();
-
-            // return $this->redirectToRoute('task_success');
-
-            // $formMovie = $this->createForm(MovieType::class);
-            // $formMovie = $this->handleRequest($request);
-
-            // if ($formMovie->isSubmitted() && $formMovie->isValid()) {
-            //     // $movie = $formMovie->get('movies')->getData();
-
-            //     // foreach ($movies as $movieFile) {
-            //     //     $movie = new Movie();
-            //     //     $picture->setTrick($Trick);
-
-            //     //     $entityManager->persist($movie);
-            //     // }
-
-            //     // $entityManager->flush();
-
-            // }
+            
+            $this->addFlash('success', 'Figure créée !');
             return $this->redirectToRoute('app_tricks');
         }
 
         return $this->render('trick/create.html.twig', [
             'formTrick' => $formTrick->createView(),
-            // 'formMovie' => $formMovie->createView(),
         ]);
 
     }
@@ -127,6 +109,7 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Figure modifiée !');
             return $this->redirectToRoute('view_trick', ['slug' => $slug]);
         }
 
@@ -159,6 +142,7 @@ class TrickController extends AbstractController
             $entityManager->remove($trick);
             $entityManager->flush();
 
+            $this->addFlash('success', 'La figure a bien été supprimée !');
             return $this->redirectToRoute('app_tricks');
         }
 

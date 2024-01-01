@@ -42,6 +42,7 @@ class AdminController extends AbstractController
         $entityManager->persist($comment);
         $entityManager->flush();
 
+        $this->addFlash('success', 'Le commentaire a bien été publié !');
         return $this->redirectToRoute('admin');
     }
 
@@ -54,6 +55,7 @@ class AdminController extends AbstractController
         $entityManager->persist($comment);
         $entityManager->flush();
 
+        $this->addFlash('success', 'Le commentaire ne sera pas publié !');
         return $this->redirectToRoute('admin');
     }
 }

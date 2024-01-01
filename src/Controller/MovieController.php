@@ -34,6 +34,7 @@ class MovieController extends AbstractController
             $entityManager->persist($movie);
             $entityManager->flush();
 
+            $this->addFlash('success', 'La vidéo a bien été ajoutée !');
             return $this->redirectToRoute('app_tricks');
         }
 
@@ -63,6 +64,7 @@ class MovieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'La vidéo a bien été modifiée !');
             return $this->redirectToRoute('view_trick', ['slug' => $slug]);
         }
 
@@ -91,6 +93,7 @@ class MovieController extends AbstractController
             $entityManager->remove($movie);
             $entityManager->flush();
 
+            $this->addFlash('success', 'La vidéo a bien été supprimée !');
             return $this->redirectToRoute('app_tricks');
         }
 

@@ -3,14 +3,6 @@
 {% block title %}SnowTricks - Modifier {{ trick.name }}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    .banniere-trick { position:relative; height: 500px; display: flex; align-items: center; justify-content: center; text-align: center; }
-    .banniere-trick::before { content: ""; background-image: url("{{ asset('images/banniere-trick.jpg') }}"); background-size: cover;  position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; opacity: 0.75; background-position-y: center; }
-    .banniere-txt-trick { position: relative; color: #333333; font-size: 3rem; line-height: 0.9; text-align: center; }
-</style>
-
 
 <div class="position-relative">
     {% if trick.pictures is not empty %}
@@ -22,64 +14,56 @@
     {% else %}
         <img  class='img-fluid' src="{{ asset('images/banniere-trick.jpg') }}">
     {% endif %}
-
+    <div class="texte-haut-droite">
+        {% if app.user %}
+            <a href="{{ path('edit_trick', {'slug': trick.name}) }}"><i class="fa-icon fa-solid fa-pencil"></i></i></a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('delete_trick', {'slug': trick.name}) }}"><i class="fa-icon fa-solid fa-trash-can"></i></a>
+            {% endif %}
+        {% endif %}
+    </div>
     <div class="position-absolute top-50 start-50 translate-middle text-center">
         <h1>{{ trick.name }}</h1>
-        <a href="{{ path('edit_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-pencil"></i></i></a>
-        <a href="{{ path('delete_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-trash-can"></i></a>
     </div>
 </div>
 
-
-<div class="example-wrapper"> 
-    <div class="d-sm-block d-md-none">
-        <button id="toggleButton" class="btn btn-primary">Afficher le contenu</button>
-    </div>
-
+<div class="bg-primary-subtle p-4"">
     {% if trick.pictures is not empty or trick.movies is not empty %}
-    <div class="d-none d-sm-block container">
-        <div class="row justify-content-between">
-            {% for picture in trick.pictures %}
-                <div class="col-sm-4 embed-responsive embed-responsive-16by9">
-                    <img class='img-fluid' src="{{ asset(picture.link) }}">
-                    <a href="{{trick.name}}/edit-picture/{{picture.id}}"><i class="fa-solid fa-pencil"></i></i></a>
-                    <a href="{{trick.name}}/delete-picture/{{picture.id}}"><i class="fa-solid fa-trash-can"></i></a>
-                </div>
-            {% endfor %}
-        
-            {% for movie in trick.movies %}
-                <div class="col-sm-4 embed-responsive embed-responsive-16by9">
-                    <iframe  src="{{ asset(movie.link) }}"> </iframe>
-                    <a href="{{trick.name}}/edit-picture/{{movie.id}}"><i class="fa-solid fa-pencil"></i></i></a>
-                    <a href="{{trick.name}}/delete-movie/{{movie.id}}"><i class="fa-solid fa-trash-can"></i></a>
-                </div>
-            {% endfor %}
-
-                <div class="col-sm-4 embed-responsive embed-responsive-16by9">
-                    <a href='/edit-trick/{{ trick.name }}/add-picture'><i class="fa-solid fa-plus"></i> <i class="fa-solid fa-image"></i></a>
-                </div>
-                <div class="col-sm-4 embed-responsive embed-responsive-16by9">
-                    <a href='/edit-trick/{{ trick.name }}/add-movie'><i class="fa-solid fa-plus"></i> <i class="fa-solid fa-clapperboard"></i></a>
-                </div>
+        <div class="d-sm-block d-md-none">
+            <button id="toggleButton" class="btn btn-primary">Afficher le contenu</button>
         </div>
-    </div>
+        <div class="d-none d-sm-block container">
+            <div class="row justify-content-between">
+                {% for picture in trick.pictures %}
+                    <div class="col-sm-4 embed-responsive embed-responsive-16by9 bg-light rounded-1 p-0 m-0">
+                        <img class='img-fluid rounded-1 m-0 p-0' src="{{ asset(picture.link) }}">
+                        <div class="d-flex justify-content-end p-1 m-0"> 
+                            <a href="{{trick.name}}/edit-picture/{{picture.id}}"><i class=" fa-icon fa-solid fa-pencil p-1"></i></i></a> 
+                            <a href="{{trick.name}}/delete-picture/{{picture.id}}"><i class="fa-icon fa-solid fa-trash-can p-1"></i></a>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% for movie in trick.movies %}
+                    <div class="col-sm-4 embed-responsive embed-responsive-16by9 bg-light rounded-1 p-0 m-0">
+                        <iframe class='img-fluid rounded-1 m-0 p-0' src="{{ asset(movie.link) }}"> </iframe>
+                        <div class="d-flex justify-content-end p-1 m-0"> 
+                            <a href="{{trick.name}}/edit-movie/{{movie.id}}"><i class="fa-icon fa-solid fa-pencil p-1"></i></i></a>
+                            <a href="{{trick.name}}/delete-movie/{{movie.id}}"><i class="fa-icon fa-solid fa-trash-can p-1"></i></a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     {% endif %}
-    
     <script>
-        // Récupérer l'élément à afficher
         const contentToToggle = document.querySelector('.d-none');
-
-        // Récupérer le bouton
         const toggleButton = document.getElementById('toggleButton');
-
-        // Ajouter un écouteur d'événement au bouton
         toggleButton.addEventListener('click', function() {
-            // Inverser la visibilité du contenu
             contentToToggle.classList.toggle('d-none');
         });
     </script> 
+</div>
 
-<div>
 
 <div class="example-wrapper text-center">
 

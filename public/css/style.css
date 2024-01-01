@@ -1,0 +1,160 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.example-wrapper { 
+  margin: 1em auto; 
+  max-width: 800px; 
+  width: 95%; 
+  font: 18px/1.5 sans-serif; 
+}
+.example-wrapper code { 
+  background: #F5F5F5; 
+  padding: 2px 6px; 
+}
+.h-400 { 
+  height:400px; 
+}
+.text-shadow { 
+  text-shadow:3px 3px 5px rgba(0,0,0,1); 
+}
+.box-shadow { 
+  box-shadow:0px 10px 20px 0px rgba(0,0,0,0.3); 
+}
+.minia-size {
+  width:240px;
+  height:160px;
+}
+.minia-size-edit {
+  width:240px;
+  height:190px;
+}
+.texte-haut-droite {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  background-color: rgba(255, 255, 255, 1);
+  padding: 5px 10px;
+}
+.fa-icon {
+  color: #000; /* Couleur par défaut de l'icône */
+  transition: color 0.3s; /* Transition fluide */
+}
+.fa-icon:hover {
+  color: #ffffff; /* Nouvelle couleur au survol */
+}
+.profil-pic {
+  width:64px;
+  height:64px;
+  background-color:white;
+/*  border:solid 0px white;*/
+/*  border-radius:50px;*/
+/*  padding:5px;*/
+}
+.m-6{
+  margin: 100px;
+}
+
+
+.banner {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  overflow:hidden;
+  display: flex; /* Utilisation de flexbox pour l'alignement */
+  justify-content: center; /* Centrer horizontalement */
+  align-items: center;
+}
+
+.banner img {
+    width: 100%;
+/*    max-height: 500px;*/
+    object-fit: cover;
+    opacity: 0.7; 
+}
+
+.max-sized-picture {
+  height: 150px;
+}
+
+.pdg {
+  padding: 10px 120px 10px 120px;
+}
+
+p {
+  padding: 10px;
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+}
+
+#comment_content{
+  width:500px;
+  margin-right:10px;
+/*background-color: black;*/
+}
+
+.login-container {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.login {
+    width: 300px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

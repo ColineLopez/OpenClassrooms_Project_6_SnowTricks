@@ -3,103 +3,137 @@
 {% block title %}SnowTricks - {{ trick.name }}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="position-relative">
+<div class="banner">
     {% if trick.pictures is not empty %}
         {% for picture in trick.pictures %}
             {% if picture.banner %}
-                <img class='img-fluid' src="{{ asset(picture.link) }}">
+                <img src="{{ asset(picture.link) }}">
             {% endif %}
         {% endfor %}
     {% else %}
-        <img  class='img-fluid' src="{{ asset('images/banniere-trick.jpg') }}">
+        <img src="{{ asset('images/banniere-trick.jpg') }}">
     {% endif %}
-
+    <div class="texte-haut-droite">
+        {% if app.user %}
+            <a href="{{ path('edit_trick', {'slug': trick.name}) }}"><i class="fa-icon fa-solid fa-pencil"></i></i></a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('delete_trick', {'slug': trick.name}) }}"><i class="fa-icon fa-solid fa-trash-can"></i></a>
+            {% endif %}
+        {% endif %}
+    </div>
     <div class="position-absolute top-50 start-50 translate-middle text-center">
         <h1>{{ trick.name }}</h1>
-        <a href="{{ path('edit_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-pencil"></i></i></a>
-        <a href="{{ path('delete_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-trash-can"></i></a>
     </div>
 </div>
 
 
-<div class="example-wrapper">
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
 
+
+<div class="bg-primary-subtle p-4">
+    <div class="d-sm-block d-md-none">
+        <button id="toggleButton" class="btn btn-primary">Afficher le contenu</button>
+    </div>
     {% if trick.pictures is not empty or trick.movies is not empty %}
-        <div class="d-sm-block d-md-none">
-            <button id="toggleButton" class="btn btn-primary">Afficher le contenu</button>
-        </div>
-
         <div class="d-none d-sm-block container">
             <div class="row justify-content-between">
                 {% for picture in trick.pictures %}
-                    <div class="col-lg-2 col-sm-6 embed-responsive embed-responsive-16by9">
-                        <img class='img-fluid' src="{{ asset(picture.link) }}">
+                    <div class="col-sm-3 embed-responsive embed-responsive-16by9">
+                        <img class=' rounded-1 m-0 p-0 max-sized-picture' src="{{ asset(picture.link) }}">
                     </div>
                 {% endfor %}
-
                 {% for movie in trick.movies %}
-                    <div class="col-lg-2 col-sm-6 embed-responsive embed-responsive-16by9">
-                     <iframe  src="{{ asset(movie.link) }}"> </iframe>
+                    <div class="col-sm-3 embed-responsive embed-responsive-16by9">
+                        <iframe class='img-fluid rounded-1 m-1 p-0' src="{{ asset(movie.link) }}"> </iframe>
                     </div>
                 {% endfor %}
+                {% if app.user %}
+                    <div class="col-sm-3 btns">
+                        <br>
+                        <a href="{{ path('add_picture', {'slug': trick.name}) }}">Ajouter une photo</a>
+                        <br>
+                        <br>
+                        <a href="{{ path('add_movie', {'slug': trick.name}) }}">Ajouter une vidéo</a>
+                    </div>
+                    {#<div class="col-sm-3">
+                        
+                    </div>#}
+                {% endif %}
             </div>
         </div>
     {% endif %}
-
     
-<script>
-    // Récupérer l'élément à afficher
-    const contentToToggle = document.querySelector('.d-none');
+    <script>
+        // Récupérer l'élément à afficher
+        const contentToToggle = document.querySelector('.d-none');
 
-    // Récupérer le bouton
-    const toggleButton = document.getElementById('toggleButton');
+        // Récupérer le bouton
+        const toggleButton = document.getElementById('toggleButton');
 
-    // Ajouter un écouteur d'événement au bouton
-    toggleButton.addEventListener('click', function() {
-        // Inverser la visibilité du contenu
-        contentToToggle.classList.toggle('d-none');
-    });
-</script> 
+        // Ajouter un écouteur d'événement au bouton
+        toggleButton.addEventListener('click', function() {
+            // Inverser la visibilité du contenu
+            contentToToggle.classList.toggle('d-none');
+        });
+    </script> 
+</div>
 
 
-
-    <p>{{ trick.description }}</p>
-    
-    <div class="row">
-      <div class="col-md-auto">{{ trick.creationDate.format('Y-m-d H:i:s') }}</div>
-      <div class="col-md-auto">{{ trick.groupId.name }}</div>
-      {% if trick.creationDate.format('Y-m-d H:i:s') != trick.editDate.format('Y-m-d H:i:s') %}
-        <div class="col-md-auto">{{ trick.editDate.format('Y-m-d H:i:s') }}</div>
-        {% endif %}
+    <div class="bg-primary-subtle p-4">
+    <div class="pdg">
+        <p>{{ trick.description }}</p>
+        <table class="table text-center">
+          <tbody>
+            <tr>
+              <td>{{ trick.creationDate.format('Y-m-d H:i:s') }}</td>
+              <td>{{ trick.groupId.name }}</td>
+              {% if trick.creationDate.format('Y-m-d H:i:s') != trick.editDate.format('Y-m-d H:i:s') %}
+                <td>{{ trick.editDate.format('Y-m-d H:i:s') }}</td>
+                {% endif %}
+            </tr>
+          </tbody>
+        </table>
+    </div>
     </div>
 
-    <hr class="my-4">
+{% if app.user %}
+<div class="bg-primary-subtle m-0 p-4">
+    <div class="pdg">
+        <hr class="my-4">
+        {{ form_start(formComment) }}
+            <div class="d-flex justify-content-evenly">
+                <div class="">
+                    {{ form_widget(formComment) }}
+                </div>
+                <div class="">
+                    <button type="submit" class="btn btn-primary">Ajouter un commentaire</button>
+                </div>
+            </div> 
+        {{ form_end(formComment) }}
+    </div>
+</div>
+{% endif %}
 
-    {{ form_start(formComment) }}
-        {{ form_widget(formComment) }}
-        <button type="submit" class="btn btn-primary">Ajouter un commentaire</button>
-    {{ form_end(formComment) }}
 
+<div class="bg-primary-subtle p-4">
+<div class="pdg">
     <hr class="my-4">
     
     {% if trick.comments|filter(comment => comment.status ==2) is not empty %}
         {% for comment in trick.comments|filter(comment => comment.status ==2) %}
-            <div class="container text-center">
-              <div class="row">
-                <div class="col">
-                  <img class='img-fluid' src="{{ asset(comment.user.picture) }}">
+            <div class="d-flex p-2 m-2">
+                <div class="p-2 align-self-center">
+                  <img class='profil-pic rounded-5 box-shadow' src="{{ asset(comment.user.picture) }}">
                 </div>
-                <div class="col">
-                  {{ comment.user.name }}
-                  <br>
-                  {{ comment.content }}
+                <div class="p-2 flex-grow-1 bg-light box-shadow">
+                    <p class="p-2"><b>{{ comment.user.name }}</b></p>
+                    <p class="p-2">{{ comment.content }}</p>
                 </div>
-              </div>
             </div>
         {% endfor %}
     {% else %}
@@ -107,9 +141,7 @@
           Aucun commentaire n'a encore été publié.
         </div>
     {% endif %}
-
-
 </div>
-    
-    
+</div>
+
 {% endblock %}
