@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SnowTricks - Réinitialisation mot de passe{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    <div class="login-container">
+        <div class="login">
+            <h2>Réinitialiser le mot de passe</h2>
+
+            <div class="login-form">
+                {{ form_start(requestForm) }}
+                    <div class="input-group">
+                        {{ form_row(requestForm.email) }}
+                    </div>
+                    <div>
+                        <small>
+                            Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+                        </small>
+                    </div>
+                    <button class="submit">Envoyer le lien de réinitialisation du mot de passe</button>
+                {{ form_end(requestForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

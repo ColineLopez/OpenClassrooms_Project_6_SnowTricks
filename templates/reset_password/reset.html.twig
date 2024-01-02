@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SnowTricks - Réinitialisation mot de passe{% endblock %}
+
+{% block body %}
+
+    <div class="login-container">
+        <div class="login">
+            <h2>Réinitialiser le mot de passe</h2>
+
+            <div class="login-form">
+                {{ form_start(resetForm) }}
+                    <div class="input-group">
+                        {{ form_row(resetForm.plainPassword) }}
+                    </div>
+                    <button class="submit">Réinitialiser le mot de passe</button>
+                {{ form_end(resetForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
