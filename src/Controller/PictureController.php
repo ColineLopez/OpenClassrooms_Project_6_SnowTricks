@@ -10,6 +10,7 @@ use App\Entity\Trick;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Picture;
 use App\Form\PictureType;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PictureController extends AbstractController
 {
@@ -43,9 +44,7 @@ class PictureController extends AbstractController
             'trick' => $trick,
             'picture' => $picture,
         ]);
-
     }
-
 
     #[Route('/edit-trick/{slug}/edit-picture/{id}', name:'edit_picture')]
     public function editPicture(EntityManagerInterface $entityManager, Request $request, string $slug, int $id) : Response
@@ -53,7 +52,7 @@ class PictureController extends AbstractController
         $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
 
         if(!$trick) {
-            throw $this->createNotFoundException('Aucun trick trouvé pour le slug ' .$slug);
+            throw $this->createNotFoundException('Aucun trick trouvé pour le slug '.$slug);
         }
 
         $trick->setEditDate();
@@ -74,7 +73,6 @@ class PictureController extends AbstractController
             'trick' => $trick,
             'picture' => $picture,
         ]);
-
     }
 
     #[Route('/edit-trick/{slug}/delete-picture/{id}', name:'delete_picture')]
@@ -84,7 +82,7 @@ class PictureController extends AbstractController
 
 
         if(!$trick) {
-            throw $this->createNotFoundException('Aucun trick trouvé pour le slug ' .$slug);
+            throw $this->createNotFoundException('Aucun trick trouvé pour le slug '.$slug);
         }
         $picture = $entityManager->getRepository(Picture::class)->find($id);
         $form = $this->createForm(PictureType::class, $picture);
@@ -103,6 +101,5 @@ class PictureController extends AbstractController
             'form' => $form->createView(),
             'picture' => $picture,
         ]);
-
     }
 }

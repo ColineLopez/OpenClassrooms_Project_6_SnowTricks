@@ -8,16 +8,25 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1>Créer un Trick</h1>
+    <div class="login-container"> 
+        <div class="login">
+            <h2>Créer une nouvelle figure</h2>
 
-    {{ form_start(formTrick) }}
-        {{ form_row(formTrick.name) }}
-        {{ form_row(formTrick.description) }}
-        {{ form_row(formTrick.group_id) }}
-
-        <button type="submit" class="btn btn-primary">Créer le trick</button>
-
-    {{ form_end(formTrick) }}
+            <div class="login-form">
+                {{ form_start(form) }}
+                    <div class="trick-input-group">
+                        {{ form_row(form.name) }}
+                    </div>
+                    <div class="trick-textarea-group">
+                        {{ form_row(form.description) }}
+                    </div>
+                    <div class="trick-select-group">
+                        {{ form_row(form.group_id) }}
+                    </div>
+                    <button type="submit">Créer la figure</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
     
 {% endblock %}

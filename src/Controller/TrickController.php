@@ -75,11 +75,11 @@ class TrickController extends AbstractController
     public function createTrick(EntityManagerInterface $entityManager, Request $request) : Response
     {
         $trick = new Trick();
-        $formTrick = $this->createForm(TrickType::class, $trick);
+        $form = $this->createForm(TrickType::class, $trick);
 
-        $formTrick->handleRequest($request);
+        $form->handleRequest($request);
 
-        if ($formTrick->isSubmitted() && $formTrick->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($trick);
             $entityManager->flush();
             
@@ -88,7 +88,7 @@ class TrickController extends AbstractController
         }
 
         return $this->render('trick/create.html.twig', [
-            'formTrick' => $formTrick->createView(),
+            'form' => $form->createView(),
         ]);
 
     }
@@ -132,13 +132,13 @@ class TrickController extends AbstractController
 
 
         if(!$trick) {
-            throw $this->createNotFoundException('Aucun trick trouvé pour le slug ' .$slug);
+            throw $this->createNotFoundException('Aucun trick trouvé pour le slug '.$slug);
         }
 
-        $form = $this->createForm(TrickType::class, $trick);
-        $form->handleRequest($request);
+        // $form = $this->createForm(TrickType::class, $trick);
+        // $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        // if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->remove($trick);
             $entityManager->flush();
 
@@ -146,10 +146,10 @@ class TrickController extends AbstractController
             return $this->redirectToRoute('app_tricks');
         }
 
-        return $this->render('trick/delete.html.twig', [
-            'trick' => $trick,
-            'form' => $form->createView()
-        ]);
+        // return $this->render('trick/delete.html.twig', [
+            // 'trick' => $trick,
+            // 'form' => $form->createView()
+        // ]);
 
-    }
+    // }
 }

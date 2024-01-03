@@ -10,6 +10,7 @@ use App\Entity\Trick;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Movie;
 use App\Form\MovieType;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class MovieController extends AbstractController
 {
@@ -20,7 +21,7 @@ class MovieController extends AbstractController
         $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
 
         if(!$trick) {
-            throw $this->createNotFoundException('Aucun trick trouvé pour le nom ' .$slug);
+            throw $this->createNotFoundException('Aucun trick trouvé pour le nom '.$slug);
         }
 
         $trick->setEditDate();
@@ -52,7 +53,7 @@ class MovieController extends AbstractController
         $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
 
         if(!$trick) {
-            throw $this->createNotFoundException('Aucun trick trouvé pour le slug ' .$slug);
+            throw $this->createNotFoundException('Aucun trick trouvé pour le slug '.$slug);
         }
 
         $trick->setEditDate();
@@ -81,9 +82,8 @@ class MovieController extends AbstractController
     {
         $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
 
-
         if(!$trick) {
-            throw $this->createNotFoundException('Aucun trick trouvé pour le slug ' .$slug);
+            throw $this->createNotFoundException('Aucun trick trouvé pour le slug '.$slug);
         }
         $movie = $entityManager->getRepository(Movie::class)->find($id);
         $form = $this->createForm(MovieType::class, $movie);
