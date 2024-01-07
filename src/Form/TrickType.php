@@ -24,7 +24,8 @@ class TrickType extends AbstractType
             ->add('group_id', EntityType::class, [
                 'class' => Group::class,
                 'choice_label' => 'name',
-                'label' => 'Choisir une option',
+                'label' => false,
+                // 'label' => 'Groupe de la figure :',
                 // D'autres options de EntityType si nécessaire
             ])
             // ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])

@@ -76,30 +76,18 @@ class PictureController extends AbstractController
     }
 
     #[Route('/edit-trick/{slug}/delete-picture/{id}', name:'delete_picture')]
-    public function deleteTrick(EntityManagerInterface $entityManager, Request $request, string $slug, int $id) : Response
+    public function deleteTrick(EntityManagerInterface $entityManager, Request $request, int $id) : Response
     {
-        $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
-
-
-        if(!$trick) {
-            throw $this->createNotFoundException('Aucun trick trouvé pour le slug '.$slug);
-        }
         $picture = $entityManager->getRepository(Picture::class)->find($id);
-        $form = $this->createForm(PictureType::class, $picture);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->remove($picture);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'L\'image a bien été supprimée !');
-            return $this->redirectToRoute('app_tricks');
+        if(!$picture){
+            throw $this->createNotFoundException('Aucune image trouvé pour l\'id '.$id);
         }
 
-        return $this->render('picture/delete.html.twig', [
-            'trick' => $trick,
-            'form' => $form->createView(),
-            'picture' => $picture,
-        ]);
+        $entityManager->remove($picture);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'L\'image a bien été supprimée !');
+        return $this->redirectToRoute('app_tricks');
     }
 }

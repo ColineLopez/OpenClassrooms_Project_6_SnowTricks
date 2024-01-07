@@ -10,10 +10,8 @@
     <div class="login-container">
         <div class="login">
             <h2>S'inscrire</h2>
-
             <div class="login-form">
                 {{ form_errors(registrationForm) }}
-
                 {{ form_start(registrationForm) }}
                     <div class="input-group">
                         {{ form_row(registrationForm.email) }}
@@ -31,7 +29,6 @@
                     <div class="input-group">
                         {{ form_row(registrationForm.agreeTerms) }}
                     </div>
-
                     <button type="submit">Register</button>
                 {{ form_end(registrationForm) }}
             </div>

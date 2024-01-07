@@ -4,21 +4,27 @@
 
 {% block body %}
 
+{% set hasBanner = false %}
+
 <div class="banner">
     {% if trick.pictures is not empty %}
         {% for picture in trick.pictures %}
             {% if picture.banner %}
                 <img src="{{ asset(picture.link) }}">
+                {% set hasBanner = true %}
             {% endif %}
         {% endfor %}
-    {% else %}
+    {% endif %}
+    {% if not hasBanner %}
         <img src="{{ asset('images/banniere-trick.jpg') }}">
     {% endif %}
-    <div class="texte-haut-droite">
+    <div class="bg-custom texte-haut-droite">
         {% if app.user %}
-            <a href="{{ path('edit_trick', {'slug': trick.name}) }}"><i class="fa-icon fa-solid fa-pencil"></i></i></a>
+            <p><a class="a-custom" href="{{ path('edit_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-pencil"></i></a></p>
             {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('delete_trick', {'slug': trick.name}) }}"><i class="fa-icon fa-solid fa-trash-can"></i></a>
+                <form action="{{ path('delete_trick', {'slug': trick.name}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ?');">
+                    <button class="delete-btn-custom" type="submit"><i class="fa-solid fa-trash-can"></i></button>
+                </form>
             {% endif %}
         {% endif %}
     </div>
@@ -27,46 +33,42 @@
     </div>
 </div>
 
-
 {% for message in app.flashes('success') %}
     <div class="alert alert-success">
         {{ message }}
     </div>
 {% endfor %}
 
-
-<div class="bg-primary-subtle p-4">
+<div class="bg-custom p-4">
     <div class="d-sm-block d-md-none">
-        <button id="toggleButton" class="btn btn-primary">Afficher le contenu</button>
+        <button id="toggleButton" class="a-custom-2">Afficher le contenu</button>
     </div>
-    {% if trick.pictures is not empty or trick.movies is not empty %}
-        <div class="d-none d-sm-block container">
-            <div class="row justify-content-between">
+    <div class="d-none d-sm-block container">
+        <div class="row justify-content-between">
+            {% if trick.pictures is not empty %}
                 {% for picture in trick.pictures %}
-                    <div class="col-sm-3 embed-responsive embed-responsive-16by9">
-                        <img class=' rounded-1 m-0 p-0 max-sized-picture' src="{{ asset(picture.link) }}">
+                    <div class="col-sm-3 embed-responsive embed-responsive-16by9 m-1">
+                        <img class='rounded-1 m-0 p-0 max-sized-picture' src="{{ asset(picture.link) }}">
                     </div>
                 {% endfor %}
+            {% endif %}
+            {% if trick.movies is not empty %}
                 {% for movie in trick.movies %}
-                    <div class="col-sm-3 embed-responsive embed-responsive-16by9">
+                    <div class="col-sm-3 embed-responsive embed-responsive-16by9 m-1">
                         <iframe class='img-fluid rounded-1 m-1 p-0' src="{{ asset(movie.link) }}"> </iframe>
                     </div>
                 {% endfor %}
-                {% if app.user %}
-                    <div class="col-sm-3 btns">
-                        <br>
-                        <a href="{{ path('add_picture', {'slug': trick.name}) }}">Ajouter une photo</a>
-                        <br>
-                        <br>
-                        <a href="{{ path('add_movie', {'slug': trick.name}) }}">Ajouter une vidéo</a>
-                    </div>
-                    {#<div class="col-sm-3">
-                        
-                    </div>#}
-                {% endif %}
-            </div>
+            {% endif %}
+            {% if app.user %}
+                <div class="col-sm-3 btns m-1">
+                    <a class="a-custom-2" href="{{ path('add_picture', {'slug': trick.name}) }}">Ajouter une photo</a>
+                </div>
+                <div class="col-sm-3 btns m-1">
+                    <a class="a-custom-2" href="{{ path('add_movie', {'slug': trick.name}) }}">Ajouter une vidéo</a>
+                </div>
+            {% endif %}
         </div>
-    {% endif %}
+    </div>
     
     <script>
         // Récupérer l'élément à afficher
@@ -81,67 +83,63 @@
             contentToToggle.classList.toggle('d-none');
         });
     </script> 
-</div>
 
-
-    <div class="bg-primary-subtle p-4">
-    <div class="pdg">
+    <div class="margin-custom p-4 text-center">
+        <hr class="hr-custom">
+        <h2 class="h2-custom">Description</h2>
         <p>{{ trick.description }}</p>
-        <table class="table text-center">
-          <tbody>
-            <tr>
-              <td>{{ trick.creationDate.format('Y-m-d H:i:s') }}</td>
-              <td>{{ trick.groupId.name }}</td>
-              {% if trick.creationDate.format('Y-m-d H:i:s') != trick.editDate.format('Y-m-d H:i:s') %}
-                <td>{{ trick.editDate.format('Y-m-d H:i:s') }}</td>
-                {% endif %}
-            </tr>
-          </tbody>
-        </table>
-    </div>
+        <div class="margin-custom d-flex justify-content-around">
+            <div class="info-custom">Date de création : {{ trick.creationDate.format('Y-m-d H:i:s') }}</div>
+            <div class="info-custom">Groupe de la figure : {{ trick.groupId.name }}</div>
+            <div class="info-custom"> Date de dernière édition : {{ trick.editDate.format('Y-m-d H:i:s') }}</div>
+        </div>
     </div>
 
-{% if app.user %}
-<div class="bg-primary-subtle m-0 p-4">
-    <div class="pdg">
-        <hr class="my-4">
+    {% if app.user %}
+    <div class="margin-custom p-4">
+        <hr class="hr-custom">
         {{ form_start(formComment) }}
             <div class="d-flex justify-content-evenly">
                 <div class="">
                     {{ form_widget(formComment) }}
                 </div>
-                <div class="">
-                    <button type="submit" class="btn btn-primary">Ajouter un commentaire</button>
-                </div>
+                <div><button type="submit" class="a-custom-2">Ajouter un commentaire</button></div>
             </div> 
         {{ form_end(formComment) }}
     </div>
-</div>
-{% endif %}
-
-
-<div class="bg-primary-subtle p-4">
-<div class="pdg">
-    <hr class="my-4">
-    
-    {% if trick.comments|filter(comment => comment.status ==2) is not empty %}
-        {% for comment in trick.comments|filter(comment => comment.status ==2) %}
-            <div class="d-flex p-2 m-2">
-                <div class="p-2 align-self-center">
-                  <img class='profil-pic rounded-5 box-shadow' src="{{ asset(comment.user.picture) }}">
-                </div>
-                <div class="p-2 flex-grow-1 bg-light box-shadow">
-                    <p class="p-2"><b>{{ comment.user.name }}</b></p>
-                    <p class="p-2">{{ comment.content }}</p>
-                </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <div class="container text-center">
-          Aucun commentaire n'a encore été publié.
-        </div>
     {% endif %}
-</div>
+
+    <div class="justify-content-center p-4">
+        <hr class="hr-custom">
+        {% if comments is not empty %}
+            {% for comment in comments %}
+                <div class="d-flex p-2 m-2 justify-content-center">
+                    <div class="p-2 align-self-center">
+                      <img class='profil-pic rounded-5 box-shadow' src="{{ asset(comment.user.picture) }}">
+                    </div>
+                    <div class="p-2 flex-grow-1 rounded-1 bg-light box-shadow max-width">
+                        <div class="p-2 user-custom">{{ comment.user.name }}</div>
+                        <div class="p-2">{{ comment.content }}</div>
+                        <div class="p-2 d-flex justify-content-end">{{ comment.creationDate.format('Y-m-d H:i:s') }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="text-center m-4 p-4">
+                {% if currentPage > 1 %}
+                    <a class="a-custom-2" href="{{ path('view_trick', {'slug': trick.name, 'page': currentPage - 1}) }}">Revenir à la page précédente</a>
+                {% endif %}
+                {% if hasMoreComments %}
+                    <a class="a-custom-2" href="{{ path('view_trick', {'slug': trick.name, 'page': currentPage + 1}) }}">Voir plus de commentaires</a>
+                {% endif %}
+            </div>
+        </div>    
+        {% else %}
+            {% if currentPage == 1 %}
+                <div class="container text-center">
+                    Aucun commentaire n'a encore été publié.
+                </div>
+            {% endif %}
+        {% endif %} 
 </div>
 
 {% endblock %}

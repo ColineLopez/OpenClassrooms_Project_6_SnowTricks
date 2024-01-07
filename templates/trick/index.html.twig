@@ -3,50 +3,70 @@
 {% block title %}SnowTricks{% endblock %}
 
 {% block body %}
-<style>
 
-</style>
-
-<div class="container-fluid py-5 h-400" style="background-image: url({{ asset('images/banniere.jpg') }}); background-size: cover; opacity: 0.75; background-position-y: center;">
-    <div class="container text-center text-white">
-        <h1 class='text-shadow'>SnowTricks</h1>
-        <br><br><br><br><br><br><br>
-        <p class='text-shadow text-black'>Explorez l'aventure infinie des sommets enneigés avec notre collection exclusive de figures de snowboard, conçues pour défier la gravité et repousser vos limites.</p>    
-    </div>
-    <div class="d-flex justify-content-end">
-        <a href="#tricks" class="btn btn-primary"><i class="fa-icon fa-solid fa-circle-arrow-down"></i></a>
-    </div>
-</div>
-
-{% for message in app.flashes('success') %}
-    <div class="alert alert-success">
-        {{ message }}
-    </div>
-{% endfor %}
-
-<div id="tricks" class="bg-primary-subtle p-4">
-    <div class="container">
-        <div class="row justify-content-between gap-3">
-            {% for trick in tricks %}
-              <div class="col-sm-3 bg-light rounded-1 m-0 p-0 box-shadow">
-                {% if trick.pictures|filter(picture => picture.banner) is not empty %}
-                    <img class='img-fluid rounded-1 m-0 p-0' src="{{ asset(trick.pictures[0].link) }}">
-                {% else %}
-                    <img  class='img-fluid rounded-1 m-0 p-0' src="{{ asset('images/banniere.jpg') }}">
-                {% endif %}
-                <div class="d-flex justify-content-between p-1">   
-                    <a class="mr-3" href="{{ path('view_trick', {'slug': trick.name}) }}">{{trick.name}}</i></i></a>
-                    {% if app.user %}
-                        <a class="mr-3 order-md-2" href="{{ path('edit_trick', {'slug': trick.name}) }}"><i class="fa-icon fa-solid fa-pencil"></i></i></a>
-                        <form id="deleteForm" action="{{ path('delete_trick', {'slug': trick.name}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ?');">
-                            <button type="submit"><i class="fa-icon fa-solid fa-trash-can"></i></button>
-                        </form>
-                    {% endif %}
-                </div>
-              </div>
-            {% endfor %}
+    <div class="container-fluid py-5 h-400" style="background-image: url({{ asset('images/banniere.jpg') }}); background-size: cover; opacity: 0.75; background-position-y: center;">
+        <div class="container text-center text-white">
+            <h1 class='text-shadow'>SnowTricks</h1>
+            <br><br><br><br><br><br><br>
+            <p class='text-shadow text-black'>Le site qu'il vous faut pour progresser dans la réalisation de vos figures !</p>    
+        </div>
+        <div class="d-flex justify-content-end">
+            <a href="#tricks" class="a-custom-2"><i class="fa-solid fa-circle-arrow-down"></i></a>
         </div>
     </div>
-    <a href="#" class="btn btn-primary"><i class="fa-solid fa-circle-arrow-up"></i></a>
-</div>
+
+    {#<div class="banner">
+        <img src='{{ asset('images/banniere.jpg') }}'>
+        <div class="position-absolute top-50 start-50 translate-middle text-center">
+            <h1 class='text-shadow'>SnowTricks</h1>
+            <p class='text-shadow text-black'>Le site de référence pour réussir vos figures de Snowboard.</p> 
+        </div>
+        <div class="d-flex justify-content-end">
+            <a href="#tricks" class="btn btn-primary"><i class="fa-icon fa-solid fa-circle-arrow-down"></i></a>
+        </div>
+    </div>#}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div id="tricks" class="bg-custom p-4">
+        <div class="container">
+            <div class="row justify-content-between gap-3">
+                {% for trick in tricks %}
+                  <div class="col-sm-3 bg-light rounded-1 m-0 p-0 box-shadow">
+                    {% if trick.pictures|filter(picture => picture.banner) is not empty %}
+                        <img class='img-fluid rounded-1 m-0 p-0' src="{{ asset(trick.pictures[0].link) }}">
+                    {% else %}
+                        <img class='img-fluid rounded-1 m-0 p-0' src="{{ asset('images/banniere.jpg') }}">
+                    {% endif %}
+                    <div class="d-flex justify-content-between p-1">
+                        <p>
+                        <a class="a-custom" href="{{ path('view_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-person-snowboarding"></i> - {{trick.name}}</a>
+                        </p>
+                        {% if app.user %}
+                            <p>
+                                <a class="a-custom mr-3 order-md-2" href="{{ path('edit_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-pencil"></i></a>
+                            </p>
+                            <form action="{{ path('delete_trick', {'slug': trick.name}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer la figure ?');">
+                                <button class="delete-btn-custom" type="submit"><i class="fa-solid fa-trash-can"></i></button>
+                            </form>
+                        {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="text-center m-4 p-4">
+            {% if currentPage > 1 %}
+                <a class="a-custom-2" href="{{ path('app_tricks', {'page': currentPage - 1}) }}">< Revenir à la page précédente</a>
+            {% endif %}
+            {% if tricks|length >= 6 %}
+                <a class="a-custom-2" href="{{ path('app_tricks', {'page': currentPage + 1}) }}">Charger plus de figures ></a>
+            {% endif %}
+        </div>
+        <p class="text-end"><a href="#" class="a-custom-2"><i class="fa-solid fa-circle-arrow-up"></i></a></p>
+    </div>
 {% endblock %}

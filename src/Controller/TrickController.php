@@ -26,12 +26,16 @@ class TrickController extends AbstractController
     protected const WAITING = 3;
 
     #[Route('/home', name: 'app_tricks')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $tricks = $entityManager->getRepository(Trick::class)->findAll();
+        $page = $request->query->getInt('page', 1);
+        $tricksPerPage = 6;
+        
+        $tricks = $entityManager->getRepository(Trick::class)->findBy([], ['creation_date' => 'DESC'], $tricksPerPage, ($page - 1) * $tricksPerPage);
 
         return $this->render('trick/index.html.twig', [
             'tricks' => $tricks,
+            'currentPage' => $page,
         ]);
     }
 
@@ -40,23 +44,41 @@ class TrickController extends AbstractController
     {
         $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
 
-
         if(!$trick) {
             throw $this->createNotFoundException('Aucun trick trouvé pour le slug ' .$slug);
         }
 
+        $page = $request->query->getInt('page', 1);
+        $commentsPerPage = 3;
+
+        $comments = $entityManager->getRepository(Comment::class)
+            ->createQueryBuilder('c')
+            ->where('c.trick = :trickId')
+            ->andWhere('c.status = :status')
+            ->setParameter('trickId', $trick)
+            ->setParameter('status', 1)
+            ->orderBy('c.creation_date', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        $totalComments = count($comments);
+        $offset = ($page - 1) * $commentsPerPage;
+        $comments = array_slice($comments, $offset, $commentsPerPage);
+
+        $hasMoreComments = ($totalComments > ($page * $commentsPerPage));
+
         $user = $this->getUser();
 
-        $comment = new Comment();
-        $formComment = $this->createForm(CommentType::class, $comment);
+        $commentPosted = new Comment();
+        $formComment = $this->createForm(CommentType::class, $commentPosted);
         $formComment->handleRequest($request);
 
         
         if ($formComment->isSubmitted() && $formComment->isValid()) {
-            $comment->setUser($user);
-            $comment->setTrick($trick);
-            $comment->setStatus(self::WAITING);
-            $entityManager->persist($comment);
+            $commentPosted->setUser($user);
+            $commentPosted->setTrick($trick);
+            $commentPosted->setStatus(self::WAITING);
+            $entityManager->persist($commentPosted);
             $entityManager->flush();
 
             $this->addFlash('success', 'Votre commentaire a bien été envoyé !');
@@ -67,7 +89,10 @@ class TrickController extends AbstractController
             'formComment' => $formComment->createView(), 
             'trick' => $trick,
             'user' => $user,
-            'comment' => $comment,
+            'commentPosted' => $commentPosted,
+            'comments' => $comments,
+            'currentPage' => $page,
+            'hasMoreComments' => $hasMoreComments,
         ]);
     }
 
@@ -90,7 +115,6 @@ class TrickController extends AbstractController
         return $this->render('trick/create.html.twig', [
             'form' => $form->createView(),
         ]);
-
     }
 
     #[Route('/edit-trick/{slug}', name:'edit_trick')]
@@ -122,7 +146,6 @@ class TrickController extends AbstractController
             'movie' => $movie,
             'picture' => $picture,
         ]);
-
     }
 
     #[Route('/delete-trick/{slug}', name:'delete_trick')]
@@ -130,26 +153,14 @@ class TrickController extends AbstractController
     {
         $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
 
-
         if(!$trick) {
             throw $this->createNotFoundException('Aucun trick trouvé pour le slug '.$slug);
         }
 
-        // $form = $this->createForm(TrickType::class, $trick);
-        // $form->handleRequest($request);
+        $entityManager->remove($trick);
+        $entityManager->flush();
 
-        // if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->remove($trick);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'La figure a bien été supprimée !');
-            return $this->redirectToRoute('app_tricks');
-        }
-
-        // return $this->render('trick/delete.html.twig', [
-            // 'trick' => $trick,
-            // 'form' => $form->createView()
-        // ]);
-
-    // }
+        $this->addFlash('success', 'La figure a bien été supprimée !');
+        return $this->redirectToRoute('app_tricks');
+    }
 }

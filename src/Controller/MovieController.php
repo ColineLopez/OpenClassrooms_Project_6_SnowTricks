@@ -44,7 +44,6 @@ class MovieController extends AbstractController
             'trick' => $trick,
             'movie' => $movie,
         ]);
-
     }
 
     #[Route('/edit-trick/{slug}/edit-movie/{id}', name:'edit_movie')]
@@ -74,34 +73,20 @@ class MovieController extends AbstractController
             'trick' => $trick,
             'movie' => $movie,
         ]);
-
     }
 
     #[Route('/edit-trick/{slug}/delete-movie/{id}', name:'delete_movie')]
-    public function deleteTrick(EntityManagerInterface $entityManager, Request $request, string $slug, int $id) : Response
+    public function deleteTrick(EntityManagerInterface $entityManager, Request $request, int $id) : Response
     {
-        $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
-
-        if(!$trick) {
-            throw $this->createNotFoundException('Aucun trick trouvé pour le slug '.$slug);
-        }
         $movie = $entityManager->getRepository(Movie::class)->find($id);
-        $form = $this->createForm(MovieType::class, $movie);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->remove($movie);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'La vidéo a bien été supprimée !');
-            return $this->redirectToRoute('app_tricks');
+        if(!$movie){
+            throw $this->createNotFoundException('Aucune vidéo trouvé pour l\'id '.$id);
         }
+        $entityManager->remove($movie);
+        $entityManager->flush();
 
-        return $this->render('movie/delete.html.twig', [
-            'trick' => $trick,
-            'form' => $form->createView(),
-            'movie' => $movie,
-        ]);
-
+        $this->addFlash('success', 'La vidéo a bien été supprimée !');
+        return $this->redirectToRoute('app_tricks');
     }
 }

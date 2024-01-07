@@ -11,110 +11,121 @@
         {% for picture in trick.pictures %}
             {% if picture.banner %}
                 <img src="{{ asset(picture.link) }}">
-                <div class="texte-haut-droite">
+                <div class="bg-custom texte-haut-droite">
                     {% if app.user %}
-                        <a href="{{ path('edit_picture', {'slug' : trick.name, 'id' : picture.id}) }}"><i class="fa-icon fa-solid fa-pencil"></i></i></a>
+                        <p><a class="a-custom" href="{{ path('edit_picture', {'slug' : trick.name, 'id' : picture.id}) }}"><i class="fa-solid fa-pencil"></i></a></p>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('delete_trick', {'slug': trick.name}) }}"><i class="fa-icon fa-solid fa-trash-can"></i></a>
+                            <form action="{{ path('delete_trick', {'slug': trick.name}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ?');">
+                    <button class="delete-btn-custom" type="submit"><i class="fa-solid fa-trash-can"></i></button>
+                </form>
                         {% endif %}
                     {% endif %}
                     {% set hasBanner = true %}
                 </div>
-
             {% endif %}
         {% endfor %}
         {% endif %}
     {% if not hasBanner %}
         <img src="{{ asset('images/banniere.jpg') }}">
     {% endif %}
-    {#<div class="texte-haut-droite">
-        {% if app.user %}
-            <a href="{{ path('edit_picture', {'slug' : trick.name, 'id' : trick.picture.id}) }}"><i class="fa-icon fa-solid fa-pencil"></i></i></a>
-            {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('delete_trick', {'slug': trick.name}) }}"><i class="fa-icon fa-solid fa-trash-can"></i></a>
-            {% endif %}
-        {% endif %}#}
     </div>
     <div class="position-absolute top-50 start-50 translate-middle text-center">
         <h1>{{ trick.name }}</h1>
     </div>
 </div>
 
-<div class="bg-primary-subtle p-4">
+<div class="bg-custom p-4">
     <div class="d-sm-block d-md-none">
-        <button id="toggleButton" class="btn btn-primary">Afficher le contenu</button>
+        <button id="toggleButton" class="a-custom-2">Afficher le contenu</button>
     </div>
-    {% if trick.pictures is not empty or trick.movies is not empty %}
-        <div class="d-none d-sm-block container">
-            <div class="row justify-content-between">
+    <div class="d-none d-sm-block container">
+        <div class="row justify-content-between">
+            {% if trick.pictures is not empty %}
                 {% for picture in trick.pictures %}
-                    <div class="col-sm-3 embed-responsive embed-responsive-16by9">
+                    <div class="col-sm-3 embed-responsive embed-responsive-16by9 m-1">
                         <img class='rounded-1 m-0 p-0 max-sized-picture' src="{{ asset(picture.link) }}">
-                        <div class="d-flex justify-content-end p-1 m-0"> 
-                            <a href="{{ path('edit_picture', {'slug' : trick.name, 'id' : picture.id}) }}"><i class=" fa-icon fa-solid fa-pencil p-1"></i></i></a> 
-                            <a href="{{ path('delete_picture', {'slug' : trick.name, 'id' : picture.id}) }}"><i class="fa-icon fa-solid fa-trash-can p-1"></i></a>
-                        </div>
-                    </div>
-                {% endfor %}
-                {% for movie in trick.movies %}
-                    <div class="col-sm-3 embed-responsive embed-responsive-16by9">
-                        <iframe class='img-fluid rounded-1 m-0 p-0' src="{{ asset(movie.link) }}"> </iframe>
-                        <div class="d-flex justify-content-end p-1 m-0">
-                            <a href="{{ path('edit_movie', {'slug' : trick.name, 'id' : movie.id}) }}"><i class="fa-icon fa-solid fa-pencil p-1"></i></i></a>
-                            <a href=""{{ path('delete_movie', {'slug' : trick.name, 'id' : movie.id}) }}"><i class="fa-icon fa-solid fa-trash-can p-1"></i></a>
+                        <div class="d-flex justify-content-start p-1">
+                            <p><a class="a-custom mr-3 order-md-2" href="{{ path('edit_picture', {'slug' : trick.name, 'id' : picture.id}) }}"><i class="fa-solid fa-pencil"></i></a>
+                            </p>
+                            <form action="{{ path('delete_picture', {'slug' : trick.name, 'id' : picture.id}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer l\'image ?');">
+                                <button class="delete-btn-custom" type="submit"><i class="fa-solid fa-trash-can"></i></button>
+                            </form>
                         </div>
                     </div>
                 {% endfor %}
             {% endif %}
-            <div class="col-sm-3 btns">
-                <br>
-                <a href="{{ path('add_picture', {'slug': trick.name}) }}">Ajouter une photo</a>
-                <br>
-                <br>
-                <a href="{{ path('add_movie', {'slug': trick.name}) }}">Ajouter une vidéo</a>
-            </div>
+            {% if trick.movies is not empty %}
+                {% for movie in trick.movies %}
+                    <div class="col-sm-3 embed-responsive embed-responsive-16by9 m-1">
+                        <iframe class='img-fluid rounded-1 m-1 p-0' src="{{ asset(movie.link) }}"> </iframe>
+                        <div class="d-flex justify-content-start p-1">
+                            <p><a class="a-custom mr-3 order-md-2" href="{{ path('edit_movie', {'slug' : trick.name, 'id' : movie.id}) }}"><i class="fa-solid fa-pencil"></i></a>
+                            </p>
+                            <form action="{{ path('delete_movie', {'slug' : trick.name, 'id' : movie.id}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer la vidéo ?');">
+                                <button class="delete-btn-custom" type="submit"><i class="fa-solid fa-trash-can"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if app.user %}
+                <div class="col-sm-3 btns m-1">
+                    <a class="a-custom-2" href="{{ path('add_picture', {'slug': trick.name}) }}">Ajouter une photo</a>
+                </div>
+                <div class="col-sm-3 btns m-1">
+                    <a class="a-custom-2" href="{{ path('add_movie', {'slug': trick.name}) }}">Ajouter une vidéo</a>
+                </div>
+            {% endif %}
         </div>
     </div>
-
+    
     <script>
+        // Récupérer l'élément à afficher
         const contentToToggle = document.querySelector('.d-none');
+
+        // Récupérer le bouton
         const toggleButton = document.getElementById('toggleButton');
+
+        // Ajouter un écouteur d'événement au bouton
         toggleButton.addEventListener('click', function() {
+            // Inverser la visibilité du contenu
             contentToToggle.classList.toggle('d-none');
         });
     </script> 
-</div>
 
-<div class="example-wrapper text-center"> 
-    <div class="login-container"> 
-        <div class="login">
-            <h2>Modifer la figure {{ trick.name }}</h2>
 
-            <div class="login-form">
+ 
+    <div class="trick-container"> 
+        <div class="trick">
+            <h2 class="h2-custom">Modifier la figure <i>{{ trick.name }}</i></h2>
+            <div class="login-form margin-custom">
                 {{ form_start(form) }}
-                    <div class="trick-input-group">
+                    <div class="trick-input-group margin-custom">
+                        <h4>Titre de la figure</h4>
                         {{ form_row(form.name) }}
                     </div>
-                    <div class="trick-textarea-group">
+                    <div class="trick-textarea-group margin-custom">
+                        <h4>Description</h4>
                         {{ form_row(form.description) }}
                     </div>
                     <div class="trick-select-group">
+                        <h4>Groupe de la figure :</h4> 
                         {{ form_row(form.group_id) }}
                     </div>
-
-                    <div class="container text-center">
-                        <div class="row">
-                            <div class="col">
-                                <a href="{{ path('delete_trick', {'slug': trick.name}) }}"">Supprimer la figure</a>  
-                            </div>
-                            <div class="col">
-                                <button type="submit">Enregistrer les modifications</button> 
-                            </div>
-                        </div>
-                    </div>
+                    <div class="d-flex justify-content-around  flex-row-reverse">
+                        <div>
+                            <button class="a-custom-2 btn-form" type="submit">Enregistrer les modifications</button> 
                 {{ form_end(form) }}
+                        </div>
+                        <div>
+                            <form action="{{ path('delete_trick', {'slug': trick.name}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer la figure ?');">
+                                <button class="a-custom-2 btn-form"  type="submit">Supprimer la figure</button>
+                            </form>
+                        </div> 
+                    </div>
             </div>
         </div>
-    </div>   
+    </div>
 </div>
+
 {% endblock %}
