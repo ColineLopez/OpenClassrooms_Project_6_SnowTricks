@@ -25,12 +25,7 @@ class TrickType extends AbstractType
                 'class' => Group::class,
                 'choice_label' => 'name',
                 'label' => false,
-                // 'label' => 'Groupe de la figure :',
-                // D'autres options de EntityType si nécessaire
             ])
-            // ->add('save', SubmitType::class, ['label' => 'Sauvegarder'])
-            // ->add('delete', SubmitType::class, ['label' => 'Supprimer'])
-            // ->add('creation_date')
         ;
     }
 

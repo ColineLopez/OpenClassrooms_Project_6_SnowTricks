@@ -18,23 +18,18 @@ class AdminController extends AbstractController
 
 
     #[Route('/admin', name: 'admin')]
+    #[IsGranted('ROLE_ADMIN')]
     public function moderationPage(EntityManagerInterface $entityManager) : Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            throw new AccessDeniedException("Accès refusé. Vous devez être administrateur pour accéder à cette page.");
-        }
-
         $tricks = $entityManager->getRepository(Trick::class)->findAll();
-
 
         return $this->render('admin/index.html.twig', [
             'tricks' => $tricks,
-            // 'controller_name' => 'CommentController',
         ]);
     }
 
     #[Route('/admin/comment/approve/{id}', name: 'admin_approve')]
-    public function approve(EntityManagerInterface $entityManager, int $id)
+    public function approve(EntityManagerInterface $entityManager, int $id) : Response
     {
         $comment = $entityManager->getRepository(Comment::class)->find($id);
 
@@ -47,7 +42,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/comment/reject/{id}', name: 'admin_reject')]
-    public function reject(EntityManagerInterface $entityManager, int $id)
+    public function reject(EntityManagerInterface $entityManager, int $id): Response
     {
         $comment = $entityManager->getRepository(Comment::class)->find($id);
 

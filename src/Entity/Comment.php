@@ -19,12 +19,6 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?Trick $trick = null;
 
-    // #[ORM\Column(length: 255)]
-    // private ?string $name = null;
-
-    // #[ORM\Column(length: 255)]
-    // private ?string $picture = null;
-
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
@@ -45,8 +39,6 @@ class Comment
     public function __construct()
     {
         $this->creation_date = new DateTime();
-        // $this->picture = 'default_picture';
-        // $this->status = self::WAITING;
     }
 
     public function getId(): ?int
@@ -65,30 +57,6 @@ class Comment
 
         return $this;
     }
-
-    // public function getName(): ?string
-    // {
-    //     return $this->name;
-    // }
-
-    // public function setName(string $name): static
-    // {
-    //     $this->name = $name;
-
-    //     return $this;
-    // }
-
-    // public function getPicture(): ?string
-    // {
-    //     return $this->picture;
-    // }
-
-    // public function setPicture(string $picture): static
-    // {
-    //     $this->picture = $picture;
-
-    //     return $this;
-    // }
 
     public function getContent(): ?string
     {

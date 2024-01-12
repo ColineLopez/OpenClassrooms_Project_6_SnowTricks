@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class CommentController extends AbstractController
 {
     #[Route('/moderation', name: 'moderation')]
-    public function moderationPage()
+    public function moderationPage() : Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedException("Accès refusé. Vous devez être administrateur pour accéder à cette page.");

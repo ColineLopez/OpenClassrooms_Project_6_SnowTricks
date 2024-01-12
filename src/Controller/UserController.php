@@ -15,10 +15,7 @@ class UserController extends AbstractController
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
         $user = $entityManager->getRepository(User::class)->find(1);
-        // $user->setRoles(['ROLE_ADMIN']);
-
-        // $entityManager->flush($user);
-        var_dump($user->getRoles($user));
+        
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserController',
         ]);

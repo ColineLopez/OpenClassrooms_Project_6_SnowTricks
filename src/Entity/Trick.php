@@ -158,10 +158,8 @@ class Trick
         return $this->edit_date;
     }
 
-    //#[ORM\PrePersist]
     public function setEditDate(): static
     {
-        // $this->edit_date = $edit_date;
         $this->edit_date = new DateTime();
 
         return $this;
