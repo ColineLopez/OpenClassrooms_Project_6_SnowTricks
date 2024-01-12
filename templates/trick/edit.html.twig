@@ -13,9 +13,9 @@
                 <img src="{{ asset(picture.link) }}">
                 <div class="bg-custom texte-haut-droite">
                     {% if app.user %}
-                        <p><a class="a-custom" href="{{ path('edit_picture', {'slug' : trick.name, 'id' : picture.id}) }}"><i class="fa-solid fa-pencil"></i></a></p>
+                        <p><a class="a-custom" href="{{ path('edit_picture', {'slug' : trick.name, 'id': picture.id}) }}"><i class="fa-solid fa-pencil"></i></a></p>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <form action="{{ path('delete_trick', {'slug': trick.name}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ?');">
+                            <form action="{{ path('unset_banner', {'slug': trick.name, 'id': picture.id}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer l\'image à la une?');">
                     <button class="delete-btn-custom" type="submit"><i class="fa-solid fa-trash-can"></i></button>
                 </form>
                         {% endif %}
@@ -26,7 +26,7 @@
         {% endfor %}
         {% endif %}
     {% if not hasBanner %}
-        <img src="{{ asset('images/banniere.jpg') }}">
+        <img src="{{ asset('images/banniere-trick.jpg') }}">
     {% endif %}
     </div>
     <div class="position-absolute top-50 start-50 translate-middle text-center">

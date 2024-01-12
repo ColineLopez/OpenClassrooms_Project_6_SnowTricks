@@ -9,10 +9,11 @@
 
     <div class="login-container">
         <div class="login">
-            <h2>Réinitialiser le mot de passe</h2>
-            <div class="login-form">
+            <h2 class="h2-custom">Réinitialiser le mot de passe</h2>
+            <div class="login-form margin-custom">
                 {{ form_start(requestForm) }}
-                    <div class="input-group">
+                    <div class="trick-input-group">
+                        <label for="username">Email :</label>
                         {{ form_row(requestForm.email) }}
                     </div>
                     <div>
@@ -20,7 +21,9 @@
                             Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
                         </small>
                     </div>
-                    <button class="submit">Envoyer le lien de réinitialisation du mot de passe</button>
+                    <div class="d-flex justify-content-center">
+                        <button class="a-custom-2 btn-form margin-custom">Envoyer le lien de réinitialisation du mot de passe</button>
+                    </div>
                 {{ form_end(requestForm) }}
             </div>
         </div>

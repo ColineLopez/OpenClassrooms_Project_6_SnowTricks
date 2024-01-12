@@ -75,6 +75,25 @@ class PictureController extends AbstractController
         ]);
     }
 
+    #[Route('/edit-trick/{slug}/unset-banner/{id}', name:'unset_banner')]
+    public function unsetBanner(EntityManagerInterface $entityManager, Request $request, string $slug, int $id) : Response
+    {
+        $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
+
+        if(!$trick) {
+            throw $this->createNotFoundException('Aucun trick trouvé pour le slug '.$slug);
+        }
+
+        $trick->setEditDate();
+
+        $picture = $entityManager->getRepository(Picture::class)->find($id);
+        $picture->setBanner(false);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'L\image de bannière a bien été retirée !');
+        return $this->redirectToRoute('view_trick', ['slug' => $slug]);
+    }
+
     #[Route('/edit-trick/{slug}/delete-picture/{id}', name:'delete_picture')]
     public function deleteTrick(EntityManagerInterface $entityManager, Request $request, int $id) : Response
     {

@@ -9,3 +9,4 @@ document.getElementsById('deleteLink').addEventListener('click', function(event)
         console.log('Suppression annulée.');
       }
     });
+

@@ -4,27 +4,16 @@
 
 {% block body %}
 
-    <div class="container-fluid py-5 h-400" style="background-image: url({{ asset('images/banniere.jpg') }}); background-size: cover; opacity: 0.75; background-position-y: center;">
-        <div class="container text-center text-white">
-            <h1 class='text-shadow'>SnowTricks</h1>
-            <br><br><br><br><br><br><br>
-            <p class='text-shadow text-black'>Le site qu'il vous faut pour progresser dans la réalisation de vos figures !</p>    
-        </div>
-        <div class="d-flex justify-content-end">
-            <a href="#tricks" class="a-custom-2"><i class="fa-solid fa-circle-arrow-down"></i></a>
-        </div>
+<div class="banner">
+    <img src="{{ asset('images/banniere.jpg') }}">
+    <div class="position-absolute top-50 start-50 translate-middle text-center">
+        <h1>SnowTricks</h1>
+        <p><b>Le site qu'il vous faut pour progresser dans la réalisation de vos figures !</b></p>
     </div>
-
-    {#<div class="banner">
-        <img src='{{ asset('images/banniere.jpg') }}'>
-        <div class="position-absolute top-50 start-50 translate-middle text-center">
-            <h1 class='text-shadow'>SnowTricks</h1>
-            <p class='text-shadow text-black'>Le site de référence pour réussir vos figures de Snowboard.</p> 
-        </div>
-        <div class="d-flex justify-content-end">
-            <a href="#tricks" class="btn btn-primary"><i class="fa-icon fa-solid fa-circle-arrow-down"></i></a>
-        </div>
-    </div>#}
+    <div class="texte-bas-droite">
+        <a href="#tricks" class="a-custom-2"><i class="fa-solid fa-angle-down"></i></a>
+    </div>
+</div>
 
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
@@ -67,6 +56,6 @@
                 <a class="a-custom-2" href="{{ path('app_tricks', {'page': currentPage + 1}) }}">Charger plus de figures ></a>
             {% endif %}
         </div>
-        <p class="text-end"><a href="#" class="a-custom-2"><i class="fa-solid fa-circle-arrow-up"></i></a></p>
+        <p class="text-end"><a href="#" class="a-custom-2"><i class="fa-solid fa-angle-up"></i></a></p>
     </div>
 {% endblock %}

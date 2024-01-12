@@ -6,13 +6,15 @@
 
     <div class="login-container">
         <div class="login">
-            <h2>Réinitialiser le mot de passe</h2>
-            <div class="login-form">
+            <h2 class="h2-custom">Réinitialiser le mot de passe</h2>
+            <div class="login-form margin-custom">
                 {{ form_start(resetForm) }}
-                    <div class="input-group">
+                    <div class="trick-input-group">
                         {{ form_row(resetForm.plainPassword) }}
                     </div>
-                    <button class="submit">Réinitialiser le mot de passe</button>
+                    <div class="d-flex justify-content-center">
+                        <button class="a-custom-2 btn-form margin-custom">Réinitialiser le mot de passe</button>
+                    </div>
                 {{ form_end(resetForm) }}
             </div>
         </div>

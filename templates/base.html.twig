@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <link rel="icon" type="image/svg" href="{{ asset('images/person-snowboarding-solid.svg') }}">
         <script src="https://kit.fontawesome.com/2a48f24d54.js" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/script.js') }}" crossorigin="anonymous"></script>
+        <script defer src="{{ asset('js/script.js') }}" crossorigin="anonymous"></script>
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -22,12 +22,12 @@
     <body>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/home"><i class="fa-solid fa-person-snowboarding"></i></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="/home"><img class="logo" src="{{ asset('images/logo.gif') }}"></a>
+        {#<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
-          <ul class="navbar-nav">
+        </button>#}
+        <div class="justify-content-end" id="navbarNav">
+          <ul class="navbar-nav" id="menu-desktop">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="/home">Accueil</a>
             </li>
@@ -55,6 +55,59 @@
             </li>
             {% endif %}
           </ul>
+          <ul class="navbar-nav" id="menu-mobile" style="display: none;">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/home"><i class="fa-solid fa-house"></i></a>
+            </li>
+            {% if app.user %}
+            <li class="nav-item">
+              <a class="nav-link" href="/create-trick"><i class="fa-solid fa-plus"></i></a>
+            </li>
+              {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item">
+                <a class="nav-link" href="/admin"><i class="fa-solid fa-lock"></i></a>
+              </li>
+              {% endif %}
+            <li class="nav-item">
+              <a class="nav-link disabled"> Bonjour, {{ app.user.name }} ! </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i></a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="/login"><i class="fa-solid fa-right-to-bracket"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/register" aria-disabled="true"><i class="fa-solid fa-user-plus"></i></a>
+            </li>
+            {% endif %}
+          </ul>
+          <script>
+    // Fonction pour détecter la taille de l'écran
+    function detecterTailleEcran() {
+        return window.innerWidth <= 600 ? 'mobile' : 'desktop';
+    }
+
+    // Fonction pour mettre à jour le menu en fonction de la taille de l'écran
+    function mettreAJourMenu() {
+        const tailleEcran = detecterTailleEcran();
+        const menuDesktop = document.getElementById('menu-desktop');
+        const menuMobile = document.getElementById('menu-mobile');
+
+        if (tailleEcran === 'desktop') {
+            menuDesktop.style.display = 'block';
+            menuMobile.style.display = 'none';
+        } else {
+            menuDesktop.style.display = 'none';
+            menuMobile.style.display = 'block';
+        }
+    }
+
+    // Mettre à jour le menu au chargement de la page et lors du redimensionnement de la fenêtre
+    window.addEventListener('load', mettreAJourMenu);
+    window.addEventListener('resize', mettreAJourMenu);
+</script>
         </div>
       </div>
     </nav>

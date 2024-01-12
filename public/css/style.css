@@ -2,11 +2,12 @@ body, html {
     height: 100%;
     margin: 0;
     font-family: Roboto; /*, sans-serif;*/
-    background-color: #FEFADF;
+    /* background-color: #FEFADF; */
+    background-color: #FFFFFF;
 }
 
 .bg-custom {
-  background-color: #FEFADF;
+  background-color: #FFFDEF;
 }
 
 .a-custom {
@@ -103,6 +104,30 @@ textarea {
 .btn-form {
   width:280px;
 }
+.logo {
+  width:100px;
+}
+/* #menu-mobile ul {
+  flex-direction: column;
+}
+
+#menu-mobile li {
+  margin-right: 0;
+  margin-bottom: 10px;
+} */
+#menu-mobile li {
+  display: inline-block;
+  margin-left:20px
+} 
+#menu-desktop li {
+  display:inline-block;
+}
+.banner-index {
+  background-image: url({{ asset('images/banniere.jpg') }}); 
+  background-size: cover; 
+  /* opacity: 0.75;  */
+  /* background-position-y: center; */
+}
 .example-wrapper { 
   margin: 1em auto; 
   max-width: 800px; 
@@ -137,6 +162,14 @@ textarea {
   color: white;
 /*  background-color: rgba(255, 255, 255, 1);*/
   padding: 5px 10px;
+}
+
+.texte-bas-droite{
+  position: absolute;
+  bottom: 10px; /* ajustez cette valeur selon vos préférences */
+  right: 10px; /* ajustez cette valeur selon vos préférences */
+  color: #ffffff; /* couleur du texte, ajustez selon vos besoins */
+  font-size: 18px; /* taille du texte, ajustez selon vos besoins */
 }
 
 .profil-pic {

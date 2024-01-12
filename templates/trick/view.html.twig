@@ -22,7 +22,7 @@
         {% if app.user %}
             <p><a class="a-custom" href="{{ path('edit_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-pencil"></i></a></p>
             {% if is_granted('ROLE_ADMIN') %}
-                <form action="{{ path('delete_trick', {'slug': trick.name}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ?');">
+                <form action="{{ path('delete_trick', {'slug': trick.name}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer la figure ?');">
                     <button class="delete-btn-custom" type="submit"><i class="fa-solid fa-trash-can"></i></button>
                 </form>
             {% endif %}
@@ -58,14 +58,6 @@
                         <iframe class='img-fluid rounded-1 m-1 p-0' src="{{ asset(movie.link) }}"> </iframe>
                     </div>
                 {% endfor %}
-            {% endif %}
-            {% if app.user %}
-                <div class="col-sm-3 btns m-1">
-                    <a class="a-custom-2" href="{{ path('add_picture', {'slug': trick.name}) }}">Ajouter une photo</a>
-                </div>
-                <div class="col-sm-3 btns m-1">
-                    <a class="a-custom-2" href="{{ path('add_movie', {'slug': trick.name}) }}">Ajouter une vidéo</a>
-                </div>
             {% endif %}
         </div>
     </div>

@@ -9,28 +9,33 @@
 
     <div class="login-container">
         <div class="login">
-            <h2>S'inscrire</h2>
-            <div class="login-form">
+            <h2 class="h2-custom">S'inscrire</h2>
+            <div class="login-form margin-custom">
                 {{ form_errors(registrationForm) }}
                 {{ form_start(registrationForm) }}
-                    <div class="input-group">
+                    <div class="trick-input-group">
                         {{ form_row(registrationForm.email) }}
                     </div>
-                    <div class="input-group">
+                    <div class="trick-input-group margin-custom">
                         {{ form_row(registrationForm.name) }}
                     </div>
-                    <div class="input-group">
+                    <div class="trick-input-group margin-custom">
                         {{ form_row(registrationForm.picture) }}
                     </div>
-                    <div class="input-group">
+                    <div class="trick-input-group margin-custom">
                         {{ form_row(registrationForm.plainPassword, {
                         label: 'Mot de passe'}) }}
                     </div>
-                    <div class="input-group">
+                    <div class="trick-input-group margin-custom">
                         {{ form_row(registrationForm.agreeTerms) }}
                     </div>
-                    <button type="submit">Register</button>
+                    <div class="d-flex justify-content-center">
+                        <button class="a-custom-2 btn-form margin-custom" type="submit">S'inscrire</button>
+                    </div>
                 {{ form_end(registrationForm) }}
+                <div class="d-flex justify-content-center margin-custom">
+                    <a class="a-custom" href="{{ path('app_login') }}">J'ai déjà un compte, me connecter</a>
+                </div>
             </div>
         </div>
     </div>
