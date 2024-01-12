@@ -9,4 +9,3 @@ kernel:
 app_homepage:
     path: /
     controller: App\Controller\TrickController::index
-    
