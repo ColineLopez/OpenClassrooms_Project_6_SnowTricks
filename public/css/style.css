@@ -284,3 +284,20 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+.form-error {
+  color:#DE3613;
+  list-style:square;
+  font-weight: bold;
+}
+
+.image-container {
+  width: 100%; /* Ajustez la largeur souhaitée */
+  height: 200px; /* Ajustez la hauteur souhaitée ou utilisez une valeur relative */
+  overflow: hidden; /* Pour cadrer l'image dans le conteneur */
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Pour remplir le conteneur sans déformer l'image */
+}

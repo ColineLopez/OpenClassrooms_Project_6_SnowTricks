@@ -17,7 +17,9 @@ use App\Form\MovieType;
 use App\Entity\Picture;
 use App\Form\PictureType;
 use DateTime;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Form\FormError;
 
 class TrickController extends AbstractController
 {
@@ -49,7 +51,7 @@ class TrickController extends AbstractController
         }
 
         $page = $request->query->getInt('page', 1);
-        $commentsPerPage = 3;
+        $commentsPerPage = 10;
 
         $comments = $entityManager->getRepository(Comment::class)
             ->createQueryBuilder('c')
@@ -105,11 +107,17 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($trick);
-            $entityManager->flush();
+            $existingTrick = $entityManager->getRepository(Trick::class)->findBy(['name' => $trick->getName()]);
+
+            if($existingTrick){
+                $form->get('name')->addError(new FormError('Ce nom de figure existe déjà.'));
+            } else {
+                $entityManager->persist($trick);
+                $entityManager->flush();
             
-            $this->addFlash('success', 'Figure créée !');
-            return $this->redirectToRoute('app_tricks');
+                $this->addFlash('success', 'Figure créée !');
+                return $this->redirectToRoute('app_tricks');
+            }
         }
 
         return $this->render('trick/create.html.twig', [
@@ -121,6 +129,7 @@ class TrickController extends AbstractController
     public function editTrick(EntityManagerInterface $entityManager, Request $request, string $slug) : Response
     {
         $trick = $entityManager->getRepository(Trick::class)->findOneBy(['name' => $slug]);
+        $id = $trick->getId();
 
         if(!$trick) {
             throw $this->createNotFoundException('Aucun trick trouvé pour le slug ' .$slug);
@@ -131,10 +140,24 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
 
-            $this->addFlash('success', 'Figure modifiée !');
-            return $this->redirectToRoute('view_trick', ['slug' => $slug]);
+            $existingTrick = $entityManager->getRepository(Trick::class)
+            ->createQueryBuilder('c')
+            ->where('c.id != :trickId')
+            ->setParameter('trickId', $id)
+            ->andWhere('c.name = :name')
+            ->setParameter('name', $trick->getName())
+            ->getQuery()
+            ->getResult();
+
+            if($existingTrick){
+                $form->get('name')->addError(new FormError('Ce nom de figure existe déjà. Le formulaire n\'a pas été soumis. Merci de modifier le nom de votre figure.'));
+            } else {
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Figure modifiée !');
+                return $this->redirectToRoute('app_tricks');
+            }            
         }
 
         $movie = new Movie();

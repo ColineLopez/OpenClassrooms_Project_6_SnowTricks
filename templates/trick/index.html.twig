@@ -27,9 +27,13 @@
                 {% for trick in tricks %}
                   <div class="col-sm-3 bg-light rounded-1 m-0 p-0 box-shadow">
                     {% if trick.pictures|filter(picture => picture.banner) is not empty %}
-                        <img class='img-fluid rounded-1 m-0 p-0' src="{{ asset(trick.pictures[0].link) }}">
+                        <div class="image-container">
+                            <img class='img-fluid rounded-1 m-0 p-0' src="{{ asset(trick.pictures[0].link) }}">
+                        </div>
                     {% else %}
-                        <img class='img-fluid rounded-1 m-0 p-0' src="{{ asset('images/banniere.jpg') }}">
+                        <div class="image-container">
+                            <img class='img-fluid rounded-1 m-0 p-0' src="{{ asset('images/banniere.jpg') }}">
+                        </div>
                     {% endif %}
                     <div class="d-flex justify-content-between p-1">
                         <p>

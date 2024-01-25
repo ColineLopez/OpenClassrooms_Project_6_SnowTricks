@@ -10,9 +10,12 @@
                 <h2 class="h2-custom">Créer une nouvelle figure</h2>
                 <div class="login-form margin-custom">
                     {{ form_start(form) }}
+                        <div class="form-error">
+                            {{ form_errors(form.name) }}
+                        </div>
                         <h4>Titre de la figure</h4>
                         <div class="trick-input-group">
-                            {{ form_row(form.name) }}
+                            {{ form_widget(form.name) }}
                         </div>
                         <div class="trick-textarea-group">
                             <h4>Description</h4>
