@@ -15,12 +15,14 @@ This project was developed only on a local server.
 
 ### Install Project on your machine 
 
-git clone https://github.com/ColineLopez/Projet-6.git
-cd Projet-6
-composer install
+    git clone https://github.com/ColineLopez/Projet-6.git
+    cd Projet-6
+    composer install
 
 ### Project's screenshot
 
-![Homepage](images/readme/home.png)(images/readme/home2.png)
-![Connection's page](images/readme/login.png)
-![Article's page](images/readme/article.png)(images/readme/article2.png)
+![Homepage](public/images/readme/home.png)
+![Homepage2](public/images/readme/home2.png)
+![Connection's page](public/images/readme/login.png)
+![Article's page](public/images/readme/article.png)
+![Article's page2](public/images/readme/article2.png)
