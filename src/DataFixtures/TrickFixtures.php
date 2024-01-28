@@ -8,7 +8,7 @@ use App\Entity\Trick;
 
 class SnowboardFiguresFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager) : void
     {
         $tricksData = [
             ['name' => 'Method Grab', 'description' => 'Saisir le talon de la planche avec la main arrière tout en pliant les genoux et en ouvrant les épaules.'],
