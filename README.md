@@ -7,17 +7,20 @@ The main objective of this project is to create a communautary blog about snowtr
 
 ### Workspace environment 
 
-This project was developed only on a local server. 
-PHP version : 8.0.26
-MySQL version : 8.0.31
-Composer required
+This project was developed only on a local server.
 
-### Clone Project on your machine 
+    PHP version : 8.0.26
+    MySQL version : 8.0.31
+    Composer required
+
+### Install Project on your machine 
 
 git clone https://github.com/ColineLopez/Projet-6.git
+cd Projet-6
+composer install
 
 ### Project's screenshot
 
-![Homepage](images/readme/home.png)
+![Homepage](images/readme/home.png)(images/readme/home2.png)
 ![Connection's page](images/readme/login.png)
-![Article's page](images/readme/article.png)
+![Article's page](images/readme/article.png)(images/readme/article2.png)

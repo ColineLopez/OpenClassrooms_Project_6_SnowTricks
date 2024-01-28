@@ -196,7 +196,7 @@ textarea {
   overflow:hidden;
   display: flex; /* Utilisation de flexbox pour l'alignement */
   justify-content: center; /* Centrer horizontalement */
-  align-items: center;
+  /* align-items: center; */
 }
 
 .banner img {

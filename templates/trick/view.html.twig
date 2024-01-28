@@ -18,16 +18,14 @@
     {% if not hasBanner %}
         <img src="{{ asset('images/banniere-trick.jpg') }}">
     {% endif %}
-    <div class="bg-custom texte-haut-droite">
-        {% if app.user %}
+    {% if app.user %}
+        <div class="bg-custom texte-haut-droite">
             <p><a class="a-custom" href="{{ path('edit_trick', {'slug': trick.name}) }}"><i class="fa-solid fa-pencil"></i></a></p>
-            {% if is_granted('ROLE_ADMIN') %}
-                <form action="{{ path('delete_trick', {'slug': trick.name}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer la figure ?');">
-                    <button class="delete-btn-custom" type="submit"><i class="fa-solid fa-trash-can"></i></button>
-                </form>
-            {% endif %}
-        {% endif %}
-    </div>
+            <form action="{{ path('delete_trick', {'slug': trick.name}) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer la figure ?');">
+                <button class="delete-btn-custom" type="submit"><i class="fa-solid fa-trash-can"></i></button>
+            </form>
+        </div>
+    {% endif %}
     <div class="position-absolute top-50 start-50 translate-middle text-center">
         <h1>{{ trick.name }}</h1>
     </div>
