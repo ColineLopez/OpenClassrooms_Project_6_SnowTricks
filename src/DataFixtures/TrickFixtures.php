@@ -6,7 +6,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Trick;
 
-class SnowboardFiguresFixtures extends Fixture
+class TrickFixtures extends Fixture
 {
     public function load(ObjectManager $manager) : void
     {
