@@ -10,7 +10,7 @@ The main objective of this project is to create a communautary blog about snowtr
 
 `git clone https://github.com/ColineLopez/OpenClassrooms_Project_6_SnowTricks.git`
 
-`cd Projet-6`
+`cd OpenClassrooms_Project_6_SnowTricks`
 
 2. Install Dependencies
 
