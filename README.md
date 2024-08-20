@@ -13,6 +13,7 @@ The main objective of this project is to create a communautary blog about snowtr
 `cd Projet-6`
 
 2. Install Dependencies
+
 `composer install`
 
 3. Set up your environment variables configuring it according to your environment.
